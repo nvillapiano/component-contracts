@@ -56,5 +56,9 @@ jobs:
       - run: pnpm --filter @ds/contracts build
       - name: Build Storybook
         run: pnpm --filter @ds/web build:storybook
-      - name: Run Storybook tests
-        run: pnpm --filter @ds/web test:ci
+      - name: Serve Storybook and run tests
+        run: |
+          pnpm --filter @ds/web exec npx http-server storybook-static --port 6006 --silent &
+          pnpm --filter @ds/web exec npx wait-on http://127.0.0.1:6006
+          pnpm --filter @ds/web test:ci        
+
