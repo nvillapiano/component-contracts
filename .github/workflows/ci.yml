@@ -57,8 +57,7 @@ jobs:
       - name: Build Storybook
         run: pnpm --filter @ds/web build:storybook
       - name: Install Playwright browsers
-        run: npx playwright install chromium --with-deps
-        working-directory: apps/web
+        run: pnpm --filter @ds/web exec playwright install chromium --with-deps
       - name: Serve Storybook and run tests
         run: |
           pnpm --filter @ds/web exec npx http-server storybook-static --port 6006 --silent &
