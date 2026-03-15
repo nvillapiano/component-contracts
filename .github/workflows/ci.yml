@@ -52,6 +52,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm tokens:build
+      - run: pnpm --filter @ds/schema build
+      - run: pnpm --filter @ds/contracts build
       - name: Build Storybook
         run: pnpm --filter @ds/web build:storybook
       - name: Run Storybook tests
