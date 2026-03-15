@@ -5,8 +5,10 @@
   "scripts": {
     "build": "pnpm -r build",
     "dev": "pnpm --filter mcp-server dev",
+    "dev:wc": "pnpm --filter @ds/web-components dev",
     "validate": "pnpm --filter validator start",
-    "types:generate": "pnpm --filter schema generate"
+    "types:generate": "pnpm --filter schema generate",
+    "tokens:build": "pnpm --filter @ds/tokens build"
   },
   "devDependencies": {
     "typescript": "^5.3.0"

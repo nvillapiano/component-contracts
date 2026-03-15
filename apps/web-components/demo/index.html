@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DS Web Components — Button Demo</title>
+
+  <!-- Token CSS custom properties — same source as React implementation -->
+  <link rel="stylesheet" href="/tokens.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--ds-surface-default);
+      color: var(--ds-text-primary);
+      padding: 48px;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: var(--ds-textSize-lg);
+      font-weight: var(--ds-weight-semibold);
+      margin: 0 0 8px;
+    }
+
+    .meta {
+      font-size: var(--ds-textSize-sm);
+      color: var(--ds-text-secondary);
+      margin-bottom: 48px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .meta strong { color: var(--ds-text-primary); }
+
+    section {
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-size: var(--ds-textSize-xs);
+      font-weight: var(--ds-weight-semibold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ds-text-tertiary);
+      margin: 0 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--ds-border-default);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .full-width-demo {
+      max-width: 320px;
+    }
+
+    .contract-note {
+      margin-top: 48px;
+      padding: 16px 20px;
+      background: var(--ds-surface-subtle);
+      border: 1px solid var(--ds-border-default);
+      border-radius: var(--ds-radius-md);
+      font-size: var(--ds-textSize-sm);
+      color: var(--ds-text-secondary);
+    }
+
+    .contract-note code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--ds-surface-muted);
+      padding: 2px 6px;
+      border-radius: var(--ds-radius-sm);
+      color: var(--ds-text-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ds-button</h1>
+  <p class="meta">
+    <strong>Contract:</strong> button@2.0.0 ·
+    <strong>Implementation:</strong> Web Components (HTMLElement) ·
+    <strong>Tokens:</strong> @ds/tokens ·
+    <strong>Framework:</strong> none
+  </p>
+
+  <!-- Variants -->
+  <section>
+    <h2>Variants</h2>
+    <div class="row">
+      <ds-button label="Primary" variant="primary"></ds-button>
+      <ds-button label="Secondary" variant="secondary"></ds-button>
+      <ds-button label="Ghost" variant="ghost"></ds-button>
+      <ds-button label="Destructive" variant="destructive"></ds-button>
+    </div>
+  </section>
+
+  <!-- Sizes -->
+  <section>
+    <h2>Sizes</h2>
+    <div class="row">
+      <ds-button label="Small" variant="primary" size="sm"></ds-button>
+      <ds-button label="Medium" variant="primary" size="md"></ds-button>
+      <ds-button label="Large" variant="primary" size="lg"></ds-button>
+    </div>
+  </section>
+
+  <!-- States -->
+  <section>
+    <h2>States</h2>
+    <div class="row">
+      <ds-button label="Default" variant="primary"></ds-button>
+      <ds-button label="Disabled" variant="primary" disabled></ds-button>
+      <ds-button label="Loading" variant="primary" loading></ds-button>
+    </div>
+  </section>
+
+  <!-- Full width -->
+  <section>
+    <h2>Full Width</h2>
+    <div class="full-width-demo">
+      <ds-button label="Full Width" variant="primary" full-width></ds-button>
+    </div>
+  </section>
+
+  <!-- Event demo -->
+  <section>
+    <h2>Events</h2>
+    <div class="row">
+      <ds-button label="Click me" variant="primary" id="event-demo"></ds-button>
+      <span id="event-output" style="font-size: 14px; color: var(--ds-text-secondary);">
+        Waiting for ds-press event…
+      </span>
+    </div>
+  </section>
+
+  <div class="contract-note">
+    Same contract as the React implementation (<code>button.contract.json</code>),
+    same tokens (<code>@ds/tokens</code>), zero shared code.
+    This proves the contract is framework-agnostic.
+  </div>
+
+  <!-- Register custom elements -->
+  <script type="module" src="/src/index.ts"></script>
+
+  <!-- Event demo script -->
+  <script type="module">
+    const btn = document.getElementById('event-demo');
+    const output = document.getElementById('event-output');
+    let count = 0;
+    btn.addEventListener('ds-press', () => {
+      count++;
+      output.textContent = `ds-press fired × ${count}`;
+      output.style.color = 'var(--ds-brand-500)';
+    });
+  </script>
+
+</body>
+</html>

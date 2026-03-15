@@ -1,0 +1,35 @@
+import { defineConfig } from "vite";
+import { resolve } from "path";
+import fs from "fs";
+import path from "path";
+
+export default defineConfig({
+  root: "demo",
+
+  build: {
+    lib: {
+      entry: resolve(__dirname, "src/index.ts"),
+      name: "DSWebComponents",
+      formats: ["es"],
+      fileName: "index",
+    },
+    outDir: "../dist",
+    emptyOutDir: true,
+  },
+
+  plugins: [
+    {
+      name: "serve-tokens-css",
+      configureServer(server) {
+        server.middlewares.use("/tokens.css", (_req, res) => {
+          const tokensPath = path.resolve(
+            __dirname,
+            "../../packages/tokens/dist/css/tokens.css"
+          );
+          res.setHeader("Content-Type", "text/css");
+          res.end(fs.readFileSync(tokensPath, "utf-8"));
+        });
+      },
+    },
+  ],
+});
