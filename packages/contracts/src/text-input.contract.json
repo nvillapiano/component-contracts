@@ -1,0 +1,189 @@
+{
+  "$schema": "../../schema/schema.json",
+  "id": "text-input",
+  "version": "1.2.0",
+  "displayName": "Text Input",
+  "description": "Single-line text field for user input. Supports label, helper text, error state, and leading/trailing slots.",
+  "status": "stable",
+  "platforms": ["web", "ios", "android"],
+  "tokens": {
+    "color": {
+      "background.default": "neutral.50",
+      "background.disabled": "neutral.100",
+      "border.default": "neutral.300",
+      "border.focus": "brand.500",
+      "border.error": "error.500",
+      "text.input": "neutral.900",
+      "text.placeholder": "neutral.400",
+      "text.label": "neutral.700",
+      "text.helper": "neutral.500",
+      "text.error": "error.600",
+      "focus.ring": "focus.default"
+    },
+    "typography": {
+      "input.size": "text.md",
+      "input.weight": "weight.regular",
+      "label.size": "text.sm",
+      "label.weight": "weight.medium",
+      "helper.size": "text.xs"
+    },
+    "spacing": {
+      "padding.x": "space.md",
+      "padding.y": "space.sm",
+      "label.gap": "space.xs",
+      "helper.gap": "space.xs"
+    },
+    "border": {
+      "radius": "radius.md",
+      "width": "border.sm"
+    },
+    "motion": {
+      "transition": "duration.fast"
+    }
+  },
+  "props": {
+    "label": {
+      "type": "string",
+      "description": "Visible label rendered above the input.",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "description": "Controlled value of the input.",
+      "default": ""
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "Placeholder text shown when value is empty."
+    },
+    "helperText": {
+      "type": "string",
+      "description": "Supplemental text rendered below the input."
+    },
+    "errorText": {
+      "type": "string",
+      "description": "Error message. When set, input enters error state."
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "Prevents interaction.",
+      "default": false
+    },
+    "readOnly": {
+      "type": "boolean",
+      "description": "Allows focus and copy but not editing.",
+      "default": false,
+      "platforms": {
+        "android": { "notes": "Use InputType.TYPE_NULL to approximate readOnly." }
+      }
+    },
+    "required": {
+      "type": "boolean",
+      "description": "Marks the field as required. Adds aria-required on web.",
+      "default": false
+    },
+    "type": {
+      "type": "enum",
+      "values": ["text", "email", "password", "tel", "url", "search", "number"],
+      "default": "text",
+      "description": "HTML input type. Maps to keyboard type on native.",
+      "platforms": {
+        "ios": { "nativeName": "keyboardType" },
+        "android": { "nativeName": "inputType" }
+      }
+    },
+    "maxLength": {
+      "type": "integer",
+      "description": "Maximum character count."
+    },
+    "onChange": {
+      "type": "function",
+      "description": "Called with updated value on each change.",
+      "required": true
+    },
+    "onBlur": {
+      "type": "function",
+      "description": "Called when the input loses focus."
+    },
+    "onFocus": {
+      "type": "function",
+      "description": "Called when the input gains focus."
+    },
+    "leadingIcon": {
+      "type": "ref",
+      "ref": "icon",
+      "description": "Icon rendered inside the input on the leading edge."
+    },
+    "trailingIcon": {
+      "type": "ref",
+      "ref": "icon",
+      "description": "Icon rendered inside the input on the trailing edge."
+    }
+  },
+  "variants": [
+    {
+      "id": "default",
+      "displayName": "Default",
+      "props": { "label": "Email address", "placeholder": "you@example.com" }
+    },
+    {
+      "id": "with-helper",
+      "displayName": "With Helper Text",
+      "props": { "label": "Password", "type": "password", "helperText": "Minimum 8 characters" }
+    },
+    {
+      "id": "error",
+      "displayName": "Error",
+      "props": { "label": "Email address", "value": "not-an-email", "errorText": "Enter a valid email address" }
+    },
+    {
+      "id": "disabled",
+      "displayName": "Disabled",
+      "props": { "label": "Username", "value": "nick_v", "disabled": true }
+    }
+  ],
+  "states": ["default", "focus", "error", "disabled"],
+  "behavior": {
+    "focusable": true,
+    "keyboardShortcuts": []
+  },
+  "accessibility": {
+    "role": "textbox",
+    "labelSource": "prop",
+    "requiredAria": ["aria-label", "aria-describedby"],
+    "focusManagement": "self",
+    "wcagLevel": "AA"
+  },
+  "usage": {
+    "summary": "Use Text Input for short, single-line user input. For multi-line use Textarea instead.",
+    "do": [
+      "Always provide a visible label — don't rely on placeholder as a label",
+      "Use errorText for validation messages, not helperText",
+      "Use type='email' / 'tel' etc. to trigger appropriate mobile keyboards"
+    ],
+    "dont": [
+      "Don't use for multi-line input — use Textarea",
+      "Don't hide the label for 'cleaner' UI — it harms accessibility"
+    ],
+    "relatedComponents": ["textarea", "select", "search-input"]
+  },
+  "platformNotes": {
+    "ios": "Use UITextField. errorText maps to an accessibilityHint when in error state.",
+    "android": "Use Material3 OutlinedTextField. errorText maps to isError + supportingText."
+  },
+  "changelog": [
+    {
+      "version": "1.2.0",
+      "date": "2025-03-01",
+      "changes": [
+        "Added leadingIcon and trailingIcon props",
+        "Added readOnly prop"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2024-04-10",
+      "changes": ["Initial stable release"]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@component-contracts/schema",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./schema.json": "./schema.json"
+  },
+  "scripts": {
+    "generate": "json2ts -i schema.json -o src/types.ts --additionalProperties false && pnpm build",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "json-schema-to-typescript": "^14.0.0",
+    "typescript": "^5.3.0"
+  }
+}

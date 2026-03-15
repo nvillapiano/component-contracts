@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://your-org.com/schemas/component-contract.json",
+  "title": "ComponentContract",
+  "description": "A platform-agnostic contract describing a design system component.",
+  "type": "object",
+  "required": ["id", "version", "displayName", "status", "platforms", "props"],
+  "additionalProperties": false,
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "displayName": { "type": "string" },
+    "description": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "alpha", "beta", "stable", "deprecated", "removed"]
+    },
+    "deprecation": {
+      "type": "object",
+      "required": ["reason", "replacedBy"],
+      "properties": {
+        "reason": { "type": "string" },
+        "replacedBy": { "type": "string" },
+        "removeAfterVersion": { "type": "string" }
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["web", "ios", "android", "macos", "windows"]
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "color": { "type": "object", "additionalProperties": { "type": "string" } },
+        "typography": { "type": "object", "additionalProperties": { "type": "string" } },
+        "spacing": { "type": "object", "additionalProperties": { "type": "string" } },
+        "border": { "type": "object", "additionalProperties": { "type": "string" } },
+        "shadow": { "type": "object", "additionalProperties": { "type": "string" } },
+        "motion": { "type": "object", "additionalProperties": { "type": "string" } }
+      }
+    },
+    "props": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/PropDefinition" }
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "displayName", "props"],
+        "properties": {
+          "id": { "type": "string" },
+          "displayName": { "type": "string" },
+          "description": { "type": "string" },
+          "props": { "type": "object", "additionalProperties": true }
+        }
+      }
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["default", "hover", "focus", "active", "disabled", "loading", "error", "success", "empty"]
+      }
+    },
+    "behavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "focusable": { "type": "boolean" },
+        "pressable": { "type": "boolean" },
+        "scrollable": { "type": "boolean" },
+        "draggable": { "type": "boolean" },
+        "dismissable": { "type": "boolean" },
+        "keyboardShortcuts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["key", "action"],
+            "properties": {
+              "key": { "type": "string" },
+              "action": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "role": { "type": "string" },
+        "labelSource": {
+          "type": "string",
+          "enum": ["prop", "slot", "aria-label", "aria-labelledby", "native"]
+        },
+        "requiredAria": { "type": "array", "items": { "type": "string" } },
+        "focusManagement": {
+          "type": "string",
+          "enum": ["none", "self", "trap", "restore"]
+        },
+        "wcagLevel": { "type": "string", "enum": ["A", "AA", "AAA"] }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "slots": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "required": { "type": "boolean" },
+              "allowedComponents": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "allowedParents": { "type": "array", "items": { "type": "string" } },
+        "forbiddenParents": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": { "type": "string" },
+        "do": { "type": "array", "items": { "type": "string" } },
+        "dont": { "type": "array", "items": { "type": "string" } },
+        "relatedComponents": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "platformNotes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "web": { "type": "string" },
+        "ios": { "type": "string" },
+        "android": { "type": "string" },
+        "macos": { "type": "string" },
+        "windows": { "type": "string" }
+      }
+    },
+    "changelog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["version", "date", "changes"],
+        "properties": {
+          "version": { "type": "string" },
+          "date": { "type": "string", "format": "date" },
+          "changes": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "PropDefinition": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["string", "boolean", "number", "integer", "enum", "object", "array", "function", "ref"]
+        },
+        "description": { "type": "string" },
+        "required": { "type": "boolean" },
+        "default": {},
+        "values": { "type": "array", "items": { "type": "string" } },
+        "ref": { "type": "string" },
+        "itemType": { "type": "string" },
+        "tokenMapped": { "type": "boolean" },
+        "platforms": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "supported": { "type": "boolean" },
+              "nativeName": { "type": "string" },
+              "notes": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

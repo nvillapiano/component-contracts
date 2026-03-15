@@ -1,0 +1,189 @@
+{
+  "$schema": "../../schema/schema.json",
+  "id": "button",
+  "version": "2.0.0",
+  "displayName": "Button",
+  "description": "Triggers an action or event. The primary interactive element in the system.",
+  "status": "stable",
+  "platforms": ["web", "ios", "android"],
+  "tokens": {
+    "color": {
+      "background.primary": "brand.500",
+      "background.primary.hover": "brand.600",
+      "background.secondary": "transparent",
+      "background.ghost": "transparent",
+      "text.primary": "neutral.0",
+      "text.secondary": "brand.500",
+      "text.ghost": "brand.500",
+      "border.secondary": "brand.500",
+      "focus.ring": "focus.default"
+    },
+    "typography": {
+      "label.size": "text.sm",
+      "label.weight": "weight.semibold",
+      "label.tracking": "tracking.wide"
+    },
+    "spacing": {
+      "padding.x.sm": "space.sm",
+      "padding.x.md": "space.md",
+      "padding.x.lg": "space.lg",
+      "padding.y.sm": "space.xs",
+      "padding.y.md": "space.sm",
+      "padding.y.lg": "space.md",
+      "icon.gap": "space.xs"
+    },
+    "border": {
+      "radius": "radius.md",
+      "width": "border.sm"
+    },
+    "motion": {
+      "transition": "duration.fast"
+    }
+  },
+  "props": {
+    "variant": {
+      "type": "enum",
+      "description": "Visual style of the button.",
+      "values": ["primary", "secondary", "ghost", "destructive"],
+      "default": "primary",
+      "tokenMapped": true
+    },
+    "size": {
+      "type": "enum",
+      "description": "Controls padding and label size.",
+      "values": ["sm", "md", "lg"],
+      "default": "md",
+      "tokenMapped": true
+    },
+    "label": {
+      "type": "string",
+      "description": "Visible button text.",
+      "required": true
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "Prevents interaction.",
+      "default": false
+    },
+    "loading": {
+      "type": "boolean",
+      "description": "Replaces label with a loading indicator.",
+      "default": false
+    },
+    "iconStart": {
+      "type": "ref",
+      "ref": "icon",
+      "description": "Icon rendered before the label.",
+      "platforms": {
+        "ios": { "supported": true, "nativeName": "leadingIcon" },
+        "android": { "supported": true, "nativeName": "leadingIcon" }
+      }
+    },
+    "iconEnd": {
+      "type": "ref",
+      "ref": "icon",
+      "description": "Icon rendered after the label.",
+      "platforms": {
+        "ios": { "supported": true, "nativeName": "trailingIcon" },
+        "android": { "supported": true, "nativeName": "trailingIcon" }
+      }
+    },
+    "iconOnly": {
+      "type": "boolean",
+      "description": "Renders as a square icon button.",
+      "default": false
+    },
+    "fullWidth": {
+      "type": "boolean",
+      "description": "Stretches button to fill its container.",
+      "default": false,
+      "platforms": {
+        "ios": { "notes": "Use frame(maxWidth: .infinity) in SwiftUI." }
+      }
+    },
+    "onPress": {
+      "type": "function",
+      "description": "Called when the button is activated.",
+      "required": true
+    },
+    "href": {
+      "type": "string",
+      "description": "Renders as anchor tag on web.",
+      "platforms": {
+        "ios": { "supported": false },
+        "android": { "supported": false }
+      }
+    },
+    "type": {
+      "type": "enum",
+      "values": ["button", "submit", "reset"],
+      "default": "button",
+      "description": "HTML button type attribute.",
+      "platforms": {
+        "ios": { "supported": false },
+        "android": { "supported": false }
+      }
+    }
+  },
+  "variants": [
+    { "id": "primary-default", "displayName": "Primary", "props": { "variant": "primary", "size": "md", "label": "Continue" } },
+    { "id": "secondary-default", "displayName": "Secondary", "props": { "variant": "secondary", "size": "md", "label": "Cancel" } },
+    { "id": "ghost-default", "displayName": "Ghost", "props": { "variant": "ghost", "size": "md", "label": "More options" } },
+    { "id": "destructive", "displayName": "Destructive", "description": "Always pair with a confirmation step.", "props": { "variant": "destructive", "size": "md", "label": "Delete" } },
+    { "id": "icon-only", "displayName": "Icon Only", "props": { "variant": "ghost", "size": "md", "iconOnly": true, "label": "Close" } },
+    { "id": "loading", "displayName": "Loading", "props": { "variant": "primary", "size": "md", "label": "Saving", "loading": true } }
+  ],
+  "states": ["default", "hover", "focus", "active", "disabled", "loading"],
+  "behavior": {
+    "focusable": true,
+    "pressable": true,
+    "keyboardShortcuts": [
+      { "key": "Enter", "action": "Activate button" },
+      { "key": "Space", "action": "Activate button" }
+    ]
+  },
+  "accessibility": {
+    "role": "button",
+    "labelSource": "prop",
+    "focusManagement": "self",
+    "wcagLevel": "AA"
+  },
+  "composition": {
+    "slots": {},
+    "forbiddenParents": ["button"]
+  },
+  "usage": {
+    "summary": "Use Button to trigger actions. Choose variant based on action priority.",
+    "do": [
+      "Use one primary button per section or modal",
+      "Keep labels short and action-oriented",
+      "Use loading state to prevent duplicate submissions"
+    ],
+    "dont": [
+      "Don't use more than one primary button in a single context",
+      "Don't use for navigation — use a Link instead",
+      "Don't nest buttons inside other interactive elements"
+    ],
+    "relatedComponents": ["icon-button", "link", "menu-trigger"]
+  },
+  "platformNotes": {
+    "ios": "Use ButtonStyle protocol for variant theming. Loading state should use ProgressView overlay.",
+    "android": "Implement as Material3 Button with custom ColorScheme. Use CircularProgressIndicator for loading."
+  },
+  "changelog": [
+    {
+      "version": "2.0.0",
+      "date": "2025-01-15",
+      "changes": [
+        "BREAKING: Renamed 'danger' variant to 'destructive'",
+        "Added 'loading' prop",
+        "Added iconStart/iconEnd props"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2024-04-10",
+      "changes": ["Initial stable release"]
+    }
+  ]
+}

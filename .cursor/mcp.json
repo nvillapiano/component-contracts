@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "component-contracts": {
+      "command": "npx",
+      "args": ["tsx", "/Users/nico/sites/component-contracts/packages/mcp-server/src/server.ts"],
+      "env": {
+        "CONTRACTS_DIR": "/Users/nico/sites/component-contracts/packages/contracts/src"
+      }
+    }
+  }
+}

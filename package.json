@@ -1,0 +1,14 @@
+{
+  "name": "component-contracts",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter mcp-server dev",
+    "validate": "pnpm --filter validator start",
+    "types:generate": "pnpm --filter schema generate"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
