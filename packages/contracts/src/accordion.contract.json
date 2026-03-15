@@ -1,0 +1,218 @@
+{
+  "$schema": "../../schema/schema.json",
+  "id": "accordion",
+  "version": "0.1.0",
+  "displayName": "Accordion",
+  "description": "Molecule: collapsible disclosure list composed of atoms (buttons, text) and structured as a compound component: Accordion, AccordionItem, AccordionTrigger, AccordionContent.",
+  "status": "draft",
+  "platforms": ["web", "ios", "android"],
+  "tokens": {
+    "color": {
+      "background.item": "neutral.0",
+      "background.item.hover": "neutral.50",
+      "background.item.expanded": "neutral.50",
+      "border.item": "neutral.200",
+      "border.focus": "brand.500",
+      "text.trigger": "neutral.900",
+      "text.content": "neutral.800",
+      "icon.trigger": "neutral.500",
+      "focus.ring": "focus.default"
+    },
+    "typography": {
+      "trigger.label.size": "text.md",
+      "trigger.label.weight": "weight.medium",
+      "content.size": "text.sm"
+    },
+    "spacing": {
+      "item.gap": "space.xs",
+      "item.padding.x": "space.md",
+      "item.padding.y": "space.sm",
+      "content.padding.top": "space.xs",
+      "group.gap": "space.sm"
+    },
+    "border": {
+      "radius.item": "radius.md",
+      "width.item": "border.sm"
+    },
+    "motion": {
+      "expand.duration": "duration.normal",
+      "expand.easing": "easing.ease-out"
+    }
+  },
+  "props": {
+    "type": {
+      "type": "enum",
+      "description": "Controls whether multiple items can be expanded at once.",
+      "values": ["single", "multiple"],
+      "default": "single"
+    },
+    "collapsible": {
+      "type": "boolean",
+      "description": "When true in single mode, the open item can be collapsed so that no items are expanded.",
+      "default": false
+    },
+    "defaultValue": {
+      "type": "array",
+      "description": "Initial open item values. In single mode, only the first value is used.",
+      "itemType": "string"
+    },
+    "value": {
+      "type": "array",
+      "description": "Controlled open item values. In single mode, at most one value is respected.",
+      "itemType": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "description": "Disables all interaction with the accordion.",
+      "default": false
+    },
+    "onValueChange": {
+      "type": "function",
+      "description": "Called when the set of open item values changes."
+    },
+    "orientation": {
+      "type": "enum",
+      "description": "Keyboard navigation orientation. Vertical accordions use Up/Down, horizontal use Left/Right.",
+      "values": ["vertical", "horizontal"],
+      "default": "vertical",
+      "tokenMapped": false
+    }
+  },
+  "variants": [
+    {
+      "id": "single-non-collapsible",
+      "displayName": "Single, Non-collapsible",
+      "description": "One item open at a time, one item must always remain open.",
+      "props": {
+        "type": "single",
+        "collapsible": false,
+        "defaultValue": ["item-1"]
+      }
+    },
+    {
+      "id": "single-collapsible",
+      "displayName": "Single, Collapsible",
+      "description": "One item open at a time, all items may be collapsed.",
+      "props": {
+        "type": "single",
+        "collapsible": true,
+        "defaultValue": ["item-1"]
+      }
+    },
+    {
+      "id": "multiple",
+      "displayName": "Multiple",
+      "description": "Multiple items can be expanded at once.",
+      "props": {
+        "type": "multiple",
+        "defaultValue": ["item-1", "item-2"]
+      }
+    }
+  ],
+  "states": ["default", "hover", "focus", "active", "disabled"],
+  "behavior": {
+    "focusable": true,
+    "pressable": true,
+    "keyboardShortcuts": [
+      {
+        "key": "Tab",
+        "action": "Move focus into or out of the accordion following document order."
+      },
+      {
+        "key": "ArrowDown",
+        "action": "Move focus to the next AccordionTrigger in vertical orientation; wrap to first when at the end."
+      },
+      {
+        "key": "ArrowUp",
+        "action": "Move focus to the previous AccordionTrigger in vertical orientation; wrap to last when at the beginning."
+      },
+      {
+        "key": "ArrowRight",
+        "action": "Move focus to the next AccordionTrigger in horizontal orientation; wrap to first when at the end."
+      },
+      {
+        "key": "ArrowLeft",
+        "action": "Move focus to the previous AccordionTrigger in horizontal orientation; wrap to last when at the beginning."
+      },
+      {
+        "key": "Home",
+        "action": "Move focus to the first AccordionTrigger."
+      },
+      {
+        "key": "End",
+        "action": "Move focus to the last AccordionTrigger."
+      },
+      {
+        "key": "Enter",
+        "action": "Toggle the expanded state of the focused AccordionItem, following the single/multiple and collapsible rules. Ignore when the item is disabled."
+      },
+      {
+        "key": "Space",
+        "action": "Toggle the expanded state of the focused AccordionItem, following the single/multiple and collapsible rules. Ignore when the item is disabled."
+      }
+    ]
+  },
+  "accessibility": {
+    "role": "group",
+    "labelSource": "prop",
+    "requiredAria": [
+      "aria-expanded",
+      "aria-controls",
+      "aria-disabled"
+    ],
+    "focusManagement": "self",
+    "wcagLevel": "AA"
+  },
+  "composition": {
+    "slots": {
+      "root": {
+        "description": "Container for the accordion items. Renders the Accordion root component.",
+        "required": true,
+        "allowedComponents": ["AccordionItem"]
+      },
+      "item": {
+        "description": "Container for a single accordion entry. Wraps a trigger and its associated content.",
+        "required": true,
+        "allowedComponents": ["AccordionTrigger", "AccordionContent"]
+      },
+      "trigger": {
+        "description": "Interactive element that toggles its associated content. Typically rendered as a button atom.",
+        "required": true,
+        "allowedComponents": ["text", "icon"]
+      },
+      "content": {
+        "description": "Region that shows or hides detailed content for an item.",
+        "required": true,
+        "allowedComponents": ["typography", "layout"]
+      }
+    }
+  },
+  "usage": {
+    "summary": "Use Accordion to show and hide sections of related content. It is a molecule composed of atoms and exposed as a compound component with Accordion, AccordionItem, AccordionTrigger, and AccordionContent.",
+    "do": [
+      "Use Accordion for grouped, optionally dense content such as FAQs, filter groups, or settings sections.",
+      "Prefer single mode when users should focus on one section at a time.",
+      "Use multiple mode when users benefit from scanning several sections simultaneously."
+    ],
+    "dont": [
+      "Don't use Accordion for primary navigation — prefer navigation components instead.",
+      "Don't nest interactive controls inside triggers; keep triggers as simple button-like atoms.",
+      "Don't rely solely on animation to convey expanded state; keep aria-expanded in sync."
+    ],
+    "relatedComponents": ["disclosure", "tabs", "popover"]
+  },
+  "platformNotes": {
+    "web": "Implement using ARIA accordion guidance: triggers as buttons with aria-expanded and aria-controls pointing at region content.",
+    "ios": "Map Accordion to a vertical stack of disclosure groups. Use SwiftUI DisclosureGroup or custom Button + content pairs.",
+    "android": "Map Accordion to a column of expandable items, e.g., Material3 ExposedDropdownMenuBox or ExpansionPanels."
+  },
+  "changelog": [
+    {
+      "version": "0.1.0",
+      "date": "2026-03-15",
+      "changes": [
+        "Initial draft of accordion molecule contract with compound composition, ARIA keyboard pattern, and state-machine oriented props."
+      ]
+    }
+  ]
+}

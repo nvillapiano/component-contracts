@@ -171,6 +171,11 @@ export const FullWidth: Story = {
 // ─── Size scale ───────────────────────────────────────────────────────────────
 
 export const SizeScale: Story = {
+  args: {
+    label: "Medium",
+    variant: "primary",
+    size: "md",
+  },
   render: () => (
     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
       <Button variant="primary" size="sm" label="Small" />
@@ -183,6 +188,11 @@ export const SizeScale: Story = {
 // ─── All variants ─────────────────────────────────────────────────────────────
 
 export const AllVariants: Story = {
+  args: {
+    label: "Primary",
+    variant: "primary",
+    size: "md",
+  },
   render: () => (
     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
       <Button variant="primary"     label="Primary" />

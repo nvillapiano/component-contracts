@@ -8,6 +8,7 @@
     "dev:mcp": "pnpm --filter @ds/mcp-server dev",
     "dev:web": "pnpm --filter @ds/web dev",
     "kill:web": "lsof -ti :6006 | xargs kill 2>/dev/null || true",
+    "reset:web": "pnpm run kill:web ; pnpm run dev:web",
     "dev:tokens": "pnpm --filter @ds/tokens dev",
     "validate": "pnpm --filter @ds/validator start",
     "types:generate": "pnpm --filter @ds/schema generate",

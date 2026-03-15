@@ -209,3 +209,28 @@ Figma sync is a named future direction but not part of the PoC or MVP scope.
 ### Consequences
 - None for current implementation
 - Token format choice (DTCG) is already aligned with what Tokens Studio and Figma Variables expect
+
+---
+
+## ADR-010: JSON Schema cannot enforce conditional prop logic
+
+**Date:** 2026-03  
+**Status:** Accepted
+
+### Context
+The accordion contract has a semantic rule: the `collapsible` prop only applies when `type` is `"single"`. In `multiple` mode, `collapsible` is meaningless. This kind of conditional constraint — "prop A is only valid when prop B has value X" — is a common pattern in compound components.
+
+### Decision
+Do not attempt to encode conditional prop logic in the JSON Schema. Document the constraint in the prop's `description` field only.
+
+### Rationale
+JSON Schema draft-07 supports `if/then/else` for conditional validation, but applying it to interdependent props produces schemas that are difficult to read, maintain, and extend. The complexity cost outweighs the validation benefit, especially since:
+- The MCP server and agents read prop descriptions as natural language context
+- TypeScript's type system can enforce this at the implementation layer via function overloads or discriminated unions
+- Runtime validation (if needed) belongs in the component implementation, not the contract schema
+
+### Consequences
+- Contracts may contain props that are technically valid per schema but semantically invalid in combination — e.g. `{ type: "multiple", collapsible: true }`
+- Implementation layers (React, SwiftUI, Compose) are responsible for enforcing conditional prop logic
+- Agents consuming contracts must read prop descriptions carefully, not just type/values fields
+- A future `constraints` field could be added to the schema to express these rules in a structured but non-validating way (documentation only)
