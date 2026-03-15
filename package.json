@@ -1,14 +1,26 @@
 {
   "name": "component-contracts",
+  "version": "0.0.1",
   "private": true,
-  "version": "0.0.0",
+  "description": "Design system component contract repository",
   "scripts": {
     "build": "pnpm -r build",
-    "dev": "pnpm --filter mcp-server dev",
-    "validate": "pnpm --filter validator start",
-    "types:generate": "pnpm --filter schema generate"
+    "dev:mcp": "pnpm --filter @ds/mcp-server dev",
+    "dev:web": "pnpm --filter @ds/web dev",
+    "kill:web": "lsof -ti :6006 | xargs kill 2>/dev/null || true",
+    "dev:tokens": "pnpm --filter @ds/tokens dev",
+    "validate": "pnpm --filter @ds/validator start",
+    "types:generate": "pnpm --filter @ds/schema generate",
+    "tokens:build": "pnpm --filter @ds/tokens build",
+    "test": "pnpm --filter @ds/web test",
+    "test:ci": "pnpm --filter @ds/web test:ci"
   },
   "devDependencies": {
-    "typescript": "^5.3.0"
+    "@changesets/cli": "^2.27.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
   }
 }

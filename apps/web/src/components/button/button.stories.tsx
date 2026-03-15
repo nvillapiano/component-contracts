@@ -15,18 +15,18 @@ const meta = {
     docs: {
       description: {
         component: [
-          buttonContract.description,
+          buttonContract.description ?? "",
           "",
           "### Usage",
-          buttonContract.usage.summary,
+          buttonContract.usage?.summary ?? "",
           "",
           "**Do**",
-          buttonContract.usage.do?.map((d) => `- ${d}`).join("\n"),
+          (buttonContract.usage?.do ?? []).map((d) => `- ${d}`).join("\n"),
           "",
           "**Don't**",
-          buttonContract.usage.dont?.map((d) => `- ${d}`).join("\n"),
+          (buttonContract.usage?.dont ?? []).map((d) => `- ${d}`).join("\n"),
           "",
-          `**Contract version:** ${buttonContract.version} · **Status:** ${buttonContract.status}`,
+          `**Contract version:** ${buttonContract.version ?? "—"} · **Status:** ${buttonContract.status ?? "—"}`,
         ].join("\n"),
       },
     },
