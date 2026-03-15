@@ -1,0 +1,16 @@
+{
+  "name": "@ds/tokens",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "./css": "./dist/css/tokens.css",
+    "./json": "./dist/json/tokens.json"
+  },
+  "scripts": {
+    "build": "style-dictionary build --config style-dictionary.config.json",
+    "dev": "style-dictionary build --config style-dictionary.config.json --watch"
+  },
+  "dependencies": {
+    "style-dictionary": "^4.0.0"
+  }
+}

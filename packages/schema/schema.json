@@ -12,6 +12,9 @@
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$"
     },
+  "$schema": {
+    "type": "string"
+  },    
     "version": {
       "type": "string",
       "pattern": "^\\d+\\.\\d+\\.\\d+$"

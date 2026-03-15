@@ -1,0 +1,84 @@
+{
+  "brand": {
+    "500": { "$value": "{color.blue.500}", "$type": "color" },
+    "600": { "$value": "{color.blue.600}", "$type": "color" },
+    "700": { "$value": "{color.blue.700}", "$type": "color" }
+  },
+  "text": {
+    "primary":     { "$value": "{color.neutral.900}", "$type": "color" },
+    "secondary":   { "$value": "{color.neutral.600}", "$type": "color" },
+    "tertiary":    { "$value": "{color.neutral.400}", "$type": "color" },
+    "disabled":    { "$value": "{color.neutral.300}", "$type": "color" },
+    "inverse":     { "$value": "{color.neutral.0}",   "$type": "color" },
+    "on-brand":    { "$value": "{color.neutral.0}",   "$type": "color" }
+  },
+  "surface": {
+    "default":     { "$value": "{color.neutral.0}",   "$type": "color" },
+    "subtle":      { "$value": "{color.neutral.50}",  "$type": "color" },
+    "muted":       { "$value": "{color.neutral.100}", "$type": "color" },
+    "disabled":    { "$value": "{color.neutral.100}", "$type": "color" }
+  },
+  "border": {
+    "default":     { "$value": "{color.neutral.200}", "$type": "color" },
+    "strong":      { "$value": "{color.neutral.300}", "$type": "color" },
+    "brand":       { "$value": "{brand.500}",         "$type": "color" }
+  },
+  "feedback": {
+    "error": {
+      "default":   { "$value": "{color.red.500}",   "$type": "color" },
+      "subtle":    { "$value": "{color.red.50}",    "$type": "color" },
+      "text":      { "$value": "{color.red.600}",   "$type": "color" }
+    },
+    "success": {
+      "default":   { "$value": "{color.green.500}", "$type": "color" },
+      "subtle":    { "$value": "{color.green.50}",  "$type": "color" },
+      "text":      { "$value": "{color.green.700}", "$type": "color" }
+    }
+  },
+  "focus": {
+    "default":     { "$value": "{color.blue.500}",  "$type": "color" },
+    "ringWidth":   { "$value": "2px",               "$type": "dimension" },
+    "ringOffset":  { "$value": "2px",               "$type": "dimension" }
+  },
+  "space": {
+    "xs":  { "$value": "{space.1}", "$type": "dimension" },
+    "sm":  { "$value": "{space.2}", "$type": "dimension" },
+    "md":  { "$value": "{space.4}", "$type": "dimension" },
+    "lg":  { "$value": "{space.6}", "$type": "dimension" },
+    "xl":  { "$value": "{space.8}", "$type": "dimension" },
+    "2xl": { "$value": "{space.12}", "$type": "dimension" }
+  },
+  "textSize": {
+    "xs":  { "$value": "{font.size.xs}",  "$type": "dimension" },
+    "sm":  { "$value": "{font.size.sm}",  "$type": "dimension" },
+    "md":  { "$value": "{font.size.md}",  "$type": "dimension" },
+    "lg":  { "$value": "{font.size.lg}",  "$type": "dimension" }
+  },
+  "weight": {
+    "regular":  { "$value": "{font.weight.regular}",  "$type": "fontWeight" },
+    "medium":   { "$value": "{font.weight.medium}",   "$type": "fontWeight" },
+    "semibold": { "$value": "{font.weight.semibold}", "$type": "fontWeight" },
+    "bold":     { "$value": "{font.weight.bold}",     "$type": "fontWeight" }
+  },
+  "tracking": {
+    "normal": { "$value": "{font.tracking.normal}", "$type": "dimension" },
+    "wide":   { "$value": "{font.tracking.wide}",   "$type": "dimension" }
+  },
+  "neutral": {
+    "0":   { "$value": "{color.neutral.0}",   "$type": "color" },
+    "50":  { "$value": "{color.neutral.50}",  "$type": "color" },
+    "100": { "$value": "{color.neutral.100}", "$type": "color" },
+    "200": { "$value": "{color.neutral.200}", "$type": "color" },
+    "300": { "$value": "{color.neutral.300}", "$type": "color" },
+    "400": { "$value": "{color.neutral.400}", "$type": "color" },
+    "500": { "$value": "{color.neutral.500}", "$type": "color" },
+    "600": { "$value": "{color.neutral.600}", "$type": "color" },
+    "700": { "$value": "{color.neutral.700}", "$type": "color" },
+    "800": { "$value": "{color.neutral.800}", "$type": "color" },
+    "900": { "$value": "{color.neutral.900}", "$type": "color" }
+  },
+  "error": {
+    "500": { "$value": "{color.red.500}", "$type": "color" },
+    "600": { "$value": "{color.red.600}", "$type": "color" }
+  }
+}

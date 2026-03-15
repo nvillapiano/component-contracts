@@ -17,8 +17,9 @@ import type { ComponentContract } from "@ds/schema";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const PROJECT_ROOT = process.env.COMPONENT_CONTRACTS_ROOT || process.cwd();
 const CONTRACTS_DIR = process.env.CONTRACTS_DIR
-  ? path.resolve(process.env.CONTRACTS_DIR)
+  ? path.resolve(PROJECT_ROOT, process.env.CONTRACTS_DIR)
   : path.resolve(__dirname, "../../contracts/src");
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
