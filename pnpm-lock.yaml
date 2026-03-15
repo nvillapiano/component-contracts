@@ -119,6 +119,25 @@ importers:
         specifier: ^8.0.0
         version: 8.0.5
 
+  apps/web-components:
+    dependencies:
+      '@ds/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@ds/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.37
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.0
+        version: 5.4.21(@types/node@20.19.37)
+
   packages/contracts:
     dependencies:
       '@ds/schema':

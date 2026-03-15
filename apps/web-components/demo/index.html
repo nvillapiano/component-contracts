@@ -3,41 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DS Web Components — Button Demo</title>
-
-  <!-- Token CSS custom properties — same source as React implementation -->
+  <title>DS Web Components Demo</title>
   <link rel="stylesheet" href="/tokens.css" />
-
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background: var(--ds-surface-default);
       color: var(--ds-text-primary);
       padding: 48px;
       margin: 0;
+      max-width: 800px;
     }
-
     h1 {
       font-size: var(--ds-textSize-lg);
       font-weight: var(--ds-weight-semibold);
-      margin: 0 0 8px;
+      margin: 0 0 4px;
     }
-
     .meta {
       font-size: var(--ds-textSize-sm);
       color: var(--ds-text-secondary);
       margin-bottom: 48px;
       font-family: 'JetBrains Mono', monospace;
     }
-
     .meta strong { color: var(--ds-text-primary); }
-
-    section {
-      margin-bottom: 48px;
-    }
-
+    section { margin-bottom: 48px; }
     h2 {
       font-size: var(--ds-textSize-xs);
       font-weight: var(--ds-weight-semibold);
@@ -48,18 +38,21 @@
       padding-bottom: 8px;
       border-bottom: 1px solid var(--ds-border-default);
     }
-
+    h3 {
+      font-size: var(--ds-textSize-sm);
+      font-weight: var(--ds-weight-medium);
+      color: var(--ds-text-secondary);
+      margin: 0 0 12px;
+      margin-top: 24px;
+    }
+    h3:first-child { margin-top: 0; }
     .row {
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
-
-    .full-width-demo {
-      max-width: 320px;
-    }
-
+    .full-width-demo { max-width: 320px; }
     .contract-note {
       margin-top: 48px;
       padding: 16px 20px;
@@ -69,7 +62,6 @@
       font-size: var(--ds-textSize-sm);
       color: var(--ds-text-secondary);
     }
-
     .contract-note code {
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
@@ -78,9 +70,16 @@
       border-radius: var(--ds-radius-sm);
       color: var(--ds-text-primary);
     }
+    hr {
+      border: none;
+      border-top: 1px solid var(--ds-border-default);
+      margin: 48px 0;
+    }
   </style>
 </head>
 <body>
+
+  <!-- ── Button ─────────────────────────────────────────────────────────── -->
 
   <h1>ds-button</h1>
   <p class="meta">
@@ -90,7 +89,6 @@
     <strong>Framework:</strong> none
   </p>
 
-  <!-- Variants -->
   <section>
     <h2>Variants</h2>
     <div class="row">
@@ -101,7 +99,6 @@
     </div>
   </section>
 
-  <!-- Sizes -->
   <section>
     <h2>Sizes</h2>
     <div class="row">
@@ -111,7 +108,6 @@
     </div>
   </section>
 
-  <!-- States -->
   <section>
     <h2>States</h2>
     <div class="row">
@@ -121,43 +117,135 @@
     </div>
   </section>
 
-  <!-- Full width -->
-  <section>
-    <h2>Full Width</h2>
-    <div class="full-width-demo">
-      <ds-button label="Full Width" variant="primary" full-width></ds-button>
-    </div>
-  </section>
-
-  <!-- Event demo -->
   <section>
     <h2>Events</h2>
     <div class="row">
-      <ds-button label="Click me" variant="primary" id="event-demo"></ds-button>
-      <span id="event-output" style="font-size: 14px; color: var(--ds-text-secondary);">
-        Waiting for ds-press event…
+      <ds-button label="Click me" variant="primary" id="btn-event-demo"></ds-button>
+      <span id="btn-event-output" style="font-size: 14px; color: var(--ds-text-secondary);">
+        Waiting for ds-press…
       </span>
     </div>
   </section>
 
+  <hr />
+
+  <!-- ── Accordion ──────────────────────────────────────────────────────── -->
+
+  <h1>ds-accordion</h1>
+  <p class="meta">
+    <strong>Contract:</strong> accordion@0.1.0 ·
+    <strong>Implementation:</strong> Web Components (HTMLElement) ·
+    <strong>Tokens:</strong> @ds/tokens ·
+    <strong>Framework:</strong> none
+  </p>
+
+  <section>
+    <h2>Single, Non-collapsible</h2>
+    <ds-accordion type="single" default-value="item-1">
+      <ds-accordion-item value="item-1">
+        <ds-accordion-trigger>Section one</ds-accordion-trigger>
+        <ds-accordion-content>Content for section one. Keep this concise and scannable.</ds-accordion-content>
+      </ds-accordion-item>
+      <ds-accordion-item value="item-2">
+        <ds-accordion-trigger>Section two</ds-accordion-trigger>
+        <ds-accordion-content>Content for section two. Use accordions for related, optional detail.</ds-accordion-content>
+      </ds-accordion-item>
+      <ds-accordion-item value="item-3">
+        <ds-accordion-trigger>Section three</ds-accordion-trigger>
+        <ds-accordion-content>Content for section three. Avoid nesting interactive elements inside triggers.</ds-accordion-content>
+      </ds-accordion-item>
+    </ds-accordion>
+  </section>
+
+  <section>
+    <h2>Single, Collapsible</h2>
+    <ds-accordion type="single" collapsible default-value="item-1">
+      <ds-accordion-item value="item-1">
+        <ds-accordion-trigger>Section one</ds-accordion-trigger>
+        <ds-accordion-content>All items can be collapsed in this mode.</ds-accordion-content>
+      </ds-accordion-item>
+      <ds-accordion-item value="item-2">
+        <ds-accordion-trigger>Section two</ds-accordion-trigger>
+        <ds-accordion-content>Click the open item again to collapse it.</ds-accordion-content>
+      </ds-accordion-item>
+    </ds-accordion>
+  </section>
+
+  <section>
+    <h2>Multiple</h2>
+    <ds-accordion type="multiple" default-value="item-1,item-2">
+      <ds-accordion-item value="item-1">
+        <ds-accordion-trigger>Section one</ds-accordion-trigger>
+        <ds-accordion-content>Multiple items can be open simultaneously.</ds-accordion-content>
+      </ds-accordion-item>
+      <ds-accordion-item value="item-2">
+        <ds-accordion-trigger>Section two</ds-accordion-trigger>
+        <ds-accordion-content>Useful when users benefit from comparing sections.</ds-accordion-content>
+      </ds-accordion-item>
+      <ds-accordion-item value="item-3">
+        <ds-accordion-trigger>Section three</ds-accordion-trigger>
+        <ds-accordion-content>Each item toggles independently.</ds-accordion-content>
+      </ds-accordion-item>
+    </ds-accordion>
+  </section>
+
+  <section>
+    <h2>Disabled item</h2>
+    <ds-accordion type="single" default-value="item-1">
+      <ds-accordion-item value="item-1">
+        <ds-accordion-trigger>Active item</ds-accordion-trigger>
+        <ds-accordion-content>This item is interactive.</ds-accordion-content>
+      </ds-accordion-item>
+      <ds-accordion-item value="item-2" disabled>
+        <ds-accordion-trigger>Disabled item</ds-accordion-trigger>
+        <ds-accordion-content>This content is not reachable.</ds-accordion-content>
+      </ds-accordion-item>
+    </ds-accordion>
+  </section>
+
+  <section>
+    <h2>Events</h2>
+    <ds-accordion type="single" collapsible id="accordion-event-demo">
+      <ds-accordion-item value="item-1">
+        <ds-accordion-trigger>Toggle me</ds-accordion-trigger>
+        <ds-accordion-content>Watch the ds-value-change event fire.</ds-accordion-content>
+      </ds-accordion-item>
+      <ds-accordion-item value="item-2">
+        <ds-accordion-trigger>Or me</ds-accordion-trigger>
+        <ds-accordion-content>Each toggle fires ds-value-change with the current open values.</ds-accordion-content>
+      </ds-accordion-item>
+    </ds-accordion>
+    <p id="accordion-event-output" style="margin-top: 12px; font-size: 14px; color: var(--ds-text-secondary);">
+      Waiting for ds-value-change…
+    </p>
+  </section>
+
   <div class="contract-note">
-    Same contract as the React implementation (<code>button.contract.json</code>),
+    Same contracts as the React implementation (<code>button.contract.json</code>, <code>accordion.contract.json</code>),
     same tokens (<code>@ds/tokens</code>), zero shared code.
-    This proves the contract is framework-agnostic.
+    This proves the contracts are framework-agnostic.
   </div>
 
-  <!-- Register custom elements -->
   <script type="module" src="/src/index.ts"></script>
 
-  <!-- Event demo script -->
   <script type="module">
-    const btn = document.getElementById('event-demo');
-    const output = document.getElementById('event-output');
-    let count = 0;
+    // Button event demo
+    const btn = document.getElementById('btn-event-demo');
+    const btnOutput = document.getElementById('btn-event-output');
+    let btnCount = 0;
     btn.addEventListener('ds-press', () => {
-      count++;
-      output.textContent = `ds-press fired × ${count}`;
-      output.style.color = 'var(--ds-brand-500)';
+      btnCount++;
+      btnOutput.textContent = `ds-press fired × ${btnCount}`;
+      btnOutput.style.color = 'var(--ds-brand-500)';
+    });
+
+    // Accordion event demo
+    const accordion = document.getElementById('accordion-event-demo');
+    const accordionOutput = document.getElementById('accordion-event-output');
+    accordion.addEventListener('ds-value-change', (e) => {
+      const values = e.detail.value;
+      accordionOutput.textContent = `ds-value-change: [${values.join(', ') || 'empty'}]`;
+      accordionOutput.style.color = 'var(--ds-brand-500)';
     });
   </script>
 

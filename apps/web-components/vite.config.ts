@@ -4,7 +4,8 @@ import fs from "fs";
 import path from "path";
 
 export default defineConfig({
-  root: "demo",
+  // Serve from package root, not demo/
+  root: ".",
 
   build: {
     lib: {
@@ -13,7 +14,7 @@ export default defineConfig({
       formats: ["es"],
       fileName: "index",
     },
-    outDir: "../dist",
+    outDir: "dist",
     emptyOutDir: true,
   },
 
