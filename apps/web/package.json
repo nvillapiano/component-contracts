@@ -28,6 +28,7 @@
     "@ds/contracts": "workspace:*",
     "@ds/schema": "workspace:*",
     "@playwright/test": "^1.48.0",
+    "@storybook/blocks": "8.6.18",
     "@storybook/addon-a11y": "8.6.18",
     "@storybook/addon-docs": "8.6.18",
     "@storybook/addon-essentials": "8.6.18",

@@ -1,7 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import {
+  Title,
+  Description,
+  Primary as PrimaryBlock,
+  Controls,
+  Stories,
+} from "@storybook/blocks";
 import { expect, within, userEvent } from "@storybook/test";
 import { Button } from "./button";
 import { button as buttonContract } from "@ds/contracts";
+import { ContractTokenTable } from "../../docs/ContractTokenTable";
 
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 // Contract metadata drives the docs page — description, do/dont, related components
@@ -29,6 +37,16 @@ const meta = {
           `**Contract version:** ${buttonContract.version ?? "—"} · **Status:** ${buttonContract.status ?? "—"}`,
         ].join("\n"),
       },
+      page: () => (
+        <>
+          <Title />
+          <Description />
+          <PrimaryBlock />
+          <Controls />
+          <Stories />
+          <ContractTokenTable tokens={buttonContract.tokens} />
+        </>
+      ),
     },
   },
   argTypes: {

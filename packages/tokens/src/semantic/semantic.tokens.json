@@ -37,8 +37,8 @@
   },
   "focus": {
     "default":     { "$value": "{color.blue.500}",  "$type": "color" },
-    "ring-width":  { "$value": "2px",               "$type": "dimension" },
-    "ring-offset": { "$value": "2px",               "$type": "dimension" }
+    "ringWidth":   { "$value": "2px",               "$type": "dimension" },
+    "ringOffset":  { "$value": "2px",               "$type": "dimension" }
   },
   "space": {
     "xs":  { "$value": "{space.1}", "$type": "dimension" },
@@ -48,7 +48,7 @@
     "xl":  { "$value": "{space.8}", "$type": "dimension" },
     "2xl": { "$value": "{space.12}", "$type": "dimension" }
   },
-  "text-size": {
+  "textSize": {
     "xs":  { "$value": "{font.size.xs}",  "$type": "dimension" },
     "sm":  { "$value": "{font.size.sm}",  "$type": "dimension" },
     "md":  { "$value": "{font.size.md}",  "$type": "dimension" },
@@ -68,10 +68,13 @@
     "0":   { "$value": "{color.neutral.0}",   "$type": "color" },
     "50":  { "$value": "{color.neutral.50}",  "$type": "color" },
     "100": { "$value": "{color.neutral.100}", "$type": "color" },
+    "200": { "$value": "{color.neutral.200}", "$type": "color" },
     "300": { "$value": "{color.neutral.300}", "$type": "color" },
     "400": { "$value": "{color.neutral.400}", "$type": "color" },
     "500": { "$value": "{color.neutral.500}", "$type": "color" },
+    "600": { "$value": "{color.neutral.600}", "$type": "color" },
     "700": { "$value": "{color.neutral.700}", "$type": "color" },
+    "800": { "$value": "{color.neutral.800}", "$type": "color" },
     "900": { "$value": "{color.neutral.900}", "$type": "color" }
   },
   "error": {
