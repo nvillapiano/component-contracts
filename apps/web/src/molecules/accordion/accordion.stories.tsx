@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Title, Description, Primary, Controls, Stories } from "@storybook/blocks";
 import { expect, userEvent, within } from "@storybook/test";
 import {
   Accordion,
@@ -7,6 +8,7 @@ import {
   AccordionContent,
 } from "./accordion";
 import { accordion as accordionContract } from "@ds/contracts";
+import { ContractTokenTable } from "../../docs/ContractTokenTable";
 
 type Story = StoryObj<typeof Accordion>;
 
@@ -32,6 +34,16 @@ const meta: Meta<typeof Accordion> = {
           `**Contract version:** ${accordionContract.version ?? "—"} · **Status:** ${accordionContract.status ?? "—"}`,
         ].join("\n"),
       },
+      page: () => (
+        <>
+          <Title />
+          <Description />
+          <Primary />
+          <Controls />
+          <Stories />
+          <ContractTokenTable tokens={accordionContract.tokens} />
+        </>
+      ),
     },
   },
   argTypes: {

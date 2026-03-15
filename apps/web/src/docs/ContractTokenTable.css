@@ -1,0 +1,66 @@
+/* ─── Contract Token Table ─────────────────────────────────────────────────────
+   Uses only design tokens from @ds/tokens. No raw values.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.ds-contract-token-table {
+  margin-block-start: var(--ds-space-lg);
+}
+
+.ds-contract-token-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ds-text-size-sm);
+}
+
+.ds-contract-token-table__table th,
+.ds-contract-token-table__table td {
+  padding: var(--ds-space-xs) var(--ds-space-sm);
+  text-align: left;
+}
+
+.ds-contract-token-table__table thead {
+  border-bottom: var(--ds-border-width-sm) solid var(--ds-neutral-200);
+}
+
+.ds-contract-token-table__table tbody tr:nth-child(even) {
+  background-color: var(--ds-neutral-50);
+}
+
+.ds-contract-token-table__category {
+  font-weight: var(--ds-weight-medium);
+  color: var(--ds-neutral-900);
+  white-space: nowrap;
+}
+
+.ds-contract-token-table__role {
+  font-family: var(--ds-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  color: var(--ds-neutral-800);
+}
+
+.ds-contract-token-table__path {
+  font-family: var(--ds-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  color: var(--ds-neutral-700);
+}
+
+.ds-contract-token-table__value {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--ds-font-family-mono, var(--ds-font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace));
+  color: var(--ds-neutral-900);
+}
+
+.ds-contract-token-table__value--unresolved {
+  color: var(--ds-neutral-500);
+  font-style: italic;
+}
+
+.ds-contract-token-table__swatch {
+  display: inline-block;
+  inline-size: 12px;
+  block-size: 12px;
+  border-radius: 2px;
+  border: var(--ds-border-width-sm) solid var(--ds-neutral-200);
+  box-shadow: 0 0 0 var(--ds-border-width-xs, 1px) var(--ds-neutral-0);
+}
+

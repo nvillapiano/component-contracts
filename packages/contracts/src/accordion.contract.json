@@ -19,9 +19,9 @@
       "focus.ring": "focus.default"
     },
     "typography": {
-      "trigger.label.size": "text.md",
+      "trigger.label.size": "textSize.md",
       "trigger.label.weight": "weight.medium",
-      "content.size": "text.sm"
+      "content.size": "textSize.sm"
     },
     "spacing": {
       "item.gap": "space.xs",
@@ -32,7 +32,7 @@
     },
     "border": {
       "radius.item": "radius.md",
-      "width.item": "border.sm"
+      "width.item": "border.width.sm"
     },
     "motion": {
       "expand.duration": "duration.normal",
