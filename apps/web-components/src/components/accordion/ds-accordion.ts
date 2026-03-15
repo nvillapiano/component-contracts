@@ -15,6 +15,8 @@
  * No framework, no shared module state — pure DOM.
  */
 
+import { ChevronDown } from "lucide-static";
+
 // ─── Styles ──────────────────────────────────────────────────────────────────
 
 const accordionStyles = `
@@ -31,54 +33,61 @@ const itemStyles = `
     border: var(--ds-border-width-sm) solid var(--ds-neutral-200);
     border-radius: var(--ds-radius-md);
     overflow: hidden;
-    background: var(--ds-neutral-0);
+    background-color: var(--ds-neutral-0);
   }
-  :host([data-state="open"]) {
-    background: var(--ds-neutral-50);
+  :host([disabled]) {
+    opacity: 0.5;
   }
 `;
 
 const triggerStyles = `
   :host {
     display: block;
+    margin: 0;
   }
   button {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--ds-space-xs);
     width: 100%;
     padding: var(--ds-space-sm) var(--ds-space-md);
-    background: none;
-    border: none;
+    background-color: inherit;
+    border: 0;
     cursor: pointer;
     font-family: inherit;
-    font-size: var(--ds-textSize-md);
+    font-size: var(--ds-text-size-md);
     font-weight: var(--ds-weight-medium);
     color: var(--ds-neutral-900);
     text-align: left;
     outline: none;
-    transition: background-color var(--ds-duration-fast) ease;
+    transition:
+      background-color var(--ds-duration-fast) ease,
+      color var(--ds-duration-fast) ease,
+      box-shadow var(--ds-duration-fast) ease,
+      transform var(--ds-duration-normal) var(--ds-easing-ease-out);
   }
   button:hover:not(:disabled) {
     background-color: var(--ds-neutral-50);
   }
   button:focus-visible {
     box-shadow:
-      inset 0 0 0 2px var(--ds-brand-500);
+      0 0 0 var(--ds-focus-ring-offset) var(--ds-surface-default),
+      0 0 0 calc(var(--ds-focus-ring-offset) + var(--ds-focus-ring-width)) var(--ds-focus-default);
   }
   button:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
   }
   .icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    inline-size: 1em;
+    block-size: 1em;
     flex-shrink: 0;
-    margin-left: var(--ds-space-sm);
-    transition: transform var(--ds-duration-normal) ease-out;
+    transition:
+      opacity var(--ds-duration-fast) ease,
+      transform var(--ds-duration-normal) var(--ds-easing-ease-out);
     color: var(--ds-neutral-500);
   }
   :host([data-state="open"]) .icon {
@@ -90,19 +99,27 @@ const contentStyles = `
   :host {
     display: block;
     overflow: hidden;
+    color: var(--ds-neutral-800);
+  }
+  :host([data-state="closed"]) {
     max-height: 0;
-    transition: max-height var(--ds-duration-normal) ease-out,
-                opacity var(--ds-duration-normal) ease-out;
     opacity: 0;
+    transition:
+      max-height var(--ds-duration-normal) var(--ds-easing-ease-out),
+      opacity var(--ds-duration-normal) var(--ds-easing-ease-out);
   }
   :host([data-state="open"]) {
     max-height: 600px;
     opacity: 1;
+    transition:
+      max-height var(--ds-duration-normal) var(--ds-easing-ease-out),
+      opacity var(--ds-duration-normal) var(--ds-easing-ease-out);
   }
   .inner {
-    padding: var(--ds-space-xs) var(--ds-space-md) var(--ds-space-sm);
-    font-size: var(--ds-textSize-sm);
-    color: var(--ds-neutral-800);
+    padding-inline: var(--ds-space-md);
+    padding-block-end: var(--ds-space-sm);
+    padding-block-start: var(--ds-space-xs);
+    font-size: var(--ds-text-size-sm);
   }
 `;
 
@@ -172,7 +189,7 @@ export class DsAccordionTrigger extends HTMLElement {
     const icon = document.createElement("span");
     icon.className = "icon";
     icon.setAttribute("aria-hidden", "true");
-    icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
+    icon.innerHTML = ChevronDown;
     this.button.appendChild(icon);
 
     this.button.addEventListener("click", () => {

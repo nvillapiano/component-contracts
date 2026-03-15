@@ -30,6 +30,14 @@ export default defineConfig({
           res.setHeader("Content-Type", "text/css");
           res.end(fs.readFileSync(tokensPath, "utf-8"));
         });
+        server.middlewares.use("/fonts.css", (_req, res) => {
+          const fontsPath = path.resolve(
+            __dirname,
+            "../../packages/tokens/dist/css/fonts.css"
+          );
+          res.setHeader("Content-Type", "text/css");
+          res.end(fs.readFileSync(fontsPath, "utf-8"));
+        });
       },
     },
   ],

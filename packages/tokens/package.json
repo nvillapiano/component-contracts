@@ -4,10 +4,12 @@
   "type": "module",
   "exports": {
     "./css": "./dist/css/tokens.css",
+    "./fonts": "./dist/css/fonts.css",
     "./json": "./dist/json/tokens.json"
   },
   "scripts": {
     "build": "style-dictionary build --config style-dictionary.config.json",
+    "postbuild": "cp src/fonts.css dist/css/fonts.css",
     "dev": "style-dictionary build --config style-dictionary.config.json --watch"
   },
   "dependencies": {

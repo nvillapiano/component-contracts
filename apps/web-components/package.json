@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "@ds/contracts": "workspace:*",
-    "@ds/tokens": "workspace:*"
+    "@ds/tokens": "workspace:*",
+    "lucide-static": "^0.577.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

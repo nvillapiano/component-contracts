@@ -33,7 +33,7 @@ const styles = `
     border: var(--ds-border-width-sm) solid transparent;
     cursor: pointer;
     font-family: inherit;
-    font-size: var(--ds-textSize-sm);
+    font-size: var(--ds-text-size-sm);
     font-weight: var(--ds-weight-semibold);
     letter-spacing: var(--ds-tracking-wide);
     line-height: 1;
@@ -49,8 +49,8 @@ const styles = `
 
   button:focus-visible {
     box-shadow:
-      0 0 0 var(--ds-focus-ringOffset) var(--ds-surface-default),
-      0 0 0 calc(var(--ds-focus-ringOffset) + var(--ds-focus-ringWidth)) var(--ds-focus-default);
+      0 0 0 var(--ds-focus-ring-offset) var(--ds-surface-default),
+      0 0 0 calc(var(--ds-focus-ring-offset) + var(--ds-focus-ring-width)) var(--ds-focus-default);
   }
 
   button:disabled {
@@ -59,9 +59,9 @@ const styles = `
   }
 
   /* Sizes */
-  button.size-sm { padding: var(--ds-space-xs) var(--ds-space-sm); font-size: var(--ds-textSize-xs); }
+  button.size-sm { padding: var(--ds-space-xs) var(--ds-space-sm); font-size: var(--ds-text-size-xs); }
   button.size-md { padding: var(--ds-space-sm) var(--ds-space-md); }
-  button.size-lg { padding: var(--ds-space-md) var(--ds-space-lg); font-size: var(--ds-textSize-md); }
+  button.size-lg { padding: var(--ds-space-md) var(--ds-space-lg); font-size: var(--ds-text-size-md); }
 
   /* Variants */
   button.variant-primary {
