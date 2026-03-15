@@ -12,10 +12,10 @@
     "./json/*": "./src/json/*.contract.json"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && cp src/*.contract.json dist/"
   },
   "dependencies": {
-    "@component-contracts/schema": "workspace:*"
+    "@ds/schema": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.3.0"

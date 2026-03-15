@@ -8,18 +8,22 @@
  * Usage: pnpm validate
  */
 
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
+import _Ajv from "ajv";
+import _addFormats from "ajv-formats";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONTRACTS_DIR = path.resolve(__dirname, "../../packages/contracts/src");
-const SCHEMA_PATH = path.resolve(__dirname, "../../packages/schema/schema.json");
+const CONTRACTS_DIR = path.resolve(__dirname, "../../../packages/contracts/src");
+const SCHEMA_PATH = path.resolve(__dirname, "../../../packages/schema/schema.json");
 
-const ajv = new Ajv({ allErrors: true });
-addFormats(ajv);
+type ValidateFn = ((data: unknown) => boolean) & { errors?: Array<{ instancePath?: string; message?: string }> };
+const AjvClass = (typeof _Ajv === "function" ? _Ajv : (_Ajv as unknown as { default: typeof _Ajv }).default) as unknown as new (opts?: { allErrors?: boolean }) => { compile: (schema: unknown) => ValidateFn };
+const addFormatsFn = (typeof _addFormats === "function" ? _addFormats : (_addFormats as unknown as { default: (ajv: unknown) => void }).default) as unknown as (ajv: unknown) => void;
+
+const ajv = new AjvClass({ allErrors: true });
+addFormatsFn(ajv);
 
 const schema = JSON.parse(fs.readFileSync(SCHEMA_PATH, "utf-8"));
 const validate = ajv.compile(schema);

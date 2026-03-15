@@ -19,7 +19,7 @@
       "focus.ring": "focus.default"
     },
     "typography": {
-      "label.size": "text.sm",
+      "label.size": "textSize.sm",
       "label.weight": "weight.semibold",
       "label.tracking": "tracking.wide"
     },
@@ -34,7 +34,7 @@
     },
     "border": {
       "radius": "radius.md",
-      "width": "border.sm"
+      "width": "border.width.sm"
     },
     "motion": {
       "transition": "duration.fast"

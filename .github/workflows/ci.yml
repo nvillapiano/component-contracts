@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-contracts:
+    name: Validate contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm validate
+
+  build-tokens:
+    name: Build tokens
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm tokens:build
+
+  test-web:
+    name: Test web components
+    runs-on: ubuntu-latest
+    needs: [validate-contracts, build-tokens]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm tokens:build
+      - run: pnpm --filter @ds/schema build
+      - run: pnpm --filter @ds/contracts build
+      - name: Build Storybook
+        run: pnpm --filter @ds/web build:storybook
+      - name: Install Playwright browsers
+        run: pnpm --filter @ds/web exec playwright install chromium --with-deps
+      - name: Serve Storybook and run tests
+        run: |
+          pnpm --filter @ds/web exec npx http-server storybook-static --port 6006 --silent &
+          pnpm --filter @ds/web exec npx wait-on http://127.0.0.1:6006
+          pnpm --filter @ds/web test:ci    
+
