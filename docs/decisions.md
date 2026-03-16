@@ -315,3 +315,38 @@ The system targets four platforms (React, Web Components, iOS, Android). "Parity
 - Until Chromatic is active, criterion 4 is a manual check
 - Until the validator checks token existence, criterion 5 is a manual check via ContractTokenTable
 - Platform-specific deviations that fail criterion 1–3 must be documented in `platformNotes` in the contract
+
+---
+
+## ADR-014: Font loading strategy — token values vs. font loading
+
+**Date:** 2026-03  
+**Status:** Accepted
+
+### Context
+The system needs a consistent approach to loading the design system typeface (Inter) across all implementations. An initial approach attempted to own font loading inside `@ds/tokens` via a `fonts.css` export. Several iterations were tried:
+
+1. Google Fonts `@import` in `@ds/tokens/fonts.css` — failed in Storybook iframes due to CSP restrictions on external requests
+2. Fontsource `@import` in `@ds/tokens/fonts.css` — failed because relative paths break when CSS is copied to `dist/`, and Vite can't resolve node_modules from a static CSS file
+3. Fontsource imports in `apps/web/.storybook/preview.ts` with a global body style — works correctly
+
+### Decision
+The token layer owns font **values** only. App entry points own font **loading** and **application**.
+
+Specifically:
+- `@ds/tokens` defines `--ds-font-family-sans` and `--ds-font-family-mono` as CSS custom properties
+- `@ds/tokens/src/fonts.css` exists as a documentation comment only — it describes the loading strategy per platform but contains no actual imports
+- Each app entry point imports fontsource packages directly and sets `font-family` on `body` via a global CSS file
+- Native platforms (iOS, Android) bundle fonts per platform conventions — the token value tells them which font, the platform determines how to load it
+
+### Rationale
+- Vite resolves `@import` statements in CSS files relative to the file location — this breaks when CSS is copied to `dist/` during build
+- Storybook's iframe context restricts external font requests (CSP) — self-hosted fonts via fontsource are required
+- Font loading is fundamentally an app-level concern, not a design token concern — tokens describe design decisions, not runtime asset loading
+- This approach is consistent with how native platforms handle fonts — they don't share a loading mechanism with web
+
+### Consequences
+- Every web app that consumes `@ds/tokens` must also install and import `@fontsource/inter` and `@fontsource/jetbrains-mono` in its entry point
+- This is documented in `.cursor/rules` and in `@ds/tokens/src/fonts.css` as a comment
+- When the typeface changes, two things must be updated: the token value in `@ds/tokens` and the fontsource import in each app entry point — this is a known maintenance surface
+- The `@ds/tokens/fonts` export is kept for documentation purposes but contains no functional CSS

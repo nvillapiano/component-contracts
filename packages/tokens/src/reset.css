@@ -1,0 +1,78 @@
+/* DS Reset
+ *
+ * A minimal CSS reset that establishes a consistent rendering baseline
+ * across all web implementations (React, Web Components, etc.).
+ *
+ * Import this in every web app entry point alongside @ds/tokens/css:
+ *   import "@ds/tokens/reset";
+ *
+ * This reset intentionally does not style any HTML elements beyond
+ * the base rendering model — component styles are handled by each
+ * implementation consuming @ds/tokens/css custom properties.
+ */
+
+/* Box model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Font rendering */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Base typography */
+body {
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-text-size-md);
+  font-weight: var(--ds-weight-regular);
+  color: var(--ds-text-primary);
+  background: var(--ds-surface-default);
+}
+
+/* Inherit font properties in form elements */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* Remove default button styles */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Images */
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Remove default anchor styles */
+a {
+  color: inherit;
+  text-decoration: none;
+}

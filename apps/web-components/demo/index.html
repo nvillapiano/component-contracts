@@ -5,15 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DS Web Components Demo</title>
   <link rel="stylesheet" href="/tokens.css" />
+  <link rel="stylesheet" href="/reset.css" />
   <link rel="stylesheet" href="/fonts.css" />
+  <script type="module">
+    import "@fontsource/inter/400.css";
+    import "@fontsource/inter/500.css";
+    import "@fontsource/inter/600.css";
+    import "@fontsource/inter/700.css";
+    import "@fontsource/jetbrains-mono/400.css";
+    import "@fontsource/jetbrains-mono/500.css";
+  </script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--ds-surface-default);
-      color: var(--ds-text-primary);
       padding: 48px;
-      margin: 0;
       max-width: 800px;
     }
     h1 {
@@ -25,7 +29,7 @@
       font-size: var(--ds-textSize-sm);
       color: var(--ds-text-secondary);
       margin-bottom: 48px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--ds-font-family-mono);
     }
     .meta strong { color: var(--ds-text-primary); }
     section { margin-bottom: 48px; }
@@ -64,7 +68,7 @@
       color: var(--ds-text-secondary);
     }
     .contract-note code {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--ds-font-family-mono);
       font-size: 12px;
       background: var(--ds-surface-muted);
       padding: 2px 6px;

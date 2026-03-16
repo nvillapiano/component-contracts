@@ -201,12 +201,61 @@ A component is ready for PR when all of the following pass:
 
 ## Fonts
 
-- Font loading is owned by the token layer — never load fonts directly in component implementations, demo pages, or app entry points
-- Always import `@ds/tokens/fonts` alongside `@ds/tokens/css`:
+The token layer owns font **values** only — `--ds-font-family-sans` and `--ds-font-family-mono` are defined as CSS custom properties in `@ds/tokens`.
+
+Font **loading** and **application** are the responsibility of each app entry point:
+
+**Web (React Storybook / Vite apps):**
+- Install `@fontsource/inter` and `@fontsource/jetbrains-mono` as dependencies
+- Import in `preview.ts` or app entry point before token CSS:
   ```ts
+  import "@fontsource/inter/400.css";
+  import "@fontsource/inter/500.css";
+  import "@fontsource/inter/600.css";
+  import "@fontsource/inter/700.css";
+  import "@fontsource/jetbrains-mono/400.css";
+  import "@fontsource/jetbrains-mono/500.css";
   import "@ds/tokens/css";
-  import "@ds/tokens/fonts";
   ```
-- `@ds/tokens/fonts` is the single place to update when the typeface changes
-- For native targets: fonts are bundled per platform (Xcode project for iOS, `res/font/` for Android) — the token value tells you which font, the platform tells you how to load it
-- Never add `<link>` tags for Google Fonts directly in HTML files — use the tokens fonts export instead
+- Set `font-family: var(--ds-font-family-sans)` on `body` via a `global.css` file
+
+**Web Components demo:**
+- Same fontsource imports via Vite module resolution
+- Set `font-family: var(--ds-font-family-sans)` on `body` in demo CSS
+
+**iOS:** Bundle Inter in Xcode project, reference via Info.plist. Token value tells you which font.
+
+**Android:** Add Inter to `res/font/` or use Downloadable Fonts API. Token value tells you which font.
+
+**Never:**
+- Import fonts in component CSS files
+- Put `@font-face` or `@import` font rules in `@ds/tokens`
+- Use Google Fonts CDN `<link>` tags — they fail in Storybook iframes due to CSP
+- Assume font-family is inherited — always set it explicitly on `body`
+
+---
+
+## Reset / Normalize
+
+A CSS reset is provided by `@ds/tokens/reset`. Import it in every web app entry point:
+
+```ts
+import "@ds/tokens/css";
+import "@ds/tokens/reset";
+```
+
+For HTML-based consumers (web components demo, doc site):
+```html
+<link rel="stylesheet" href="/tokens.css" />
+<link rel="stylesheet" href="/reset.css" />
+```
+
+The reset covers: box model, font rendering normalization, base typography, form element font inheritance, and default browser style removal.
+
+Never duplicate reset rules in component CSS files — if a reset is needed, it belongs in `@ds/tokens/reset`, not in a component stylesheet.
+
+The correct import order for all web entry points is:
+1. Fontsource font files
+2. `@ds/tokens/css`
+3. `@ds/tokens/reset`
+4. App-level `global.css` (overrides only)

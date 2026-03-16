@@ -5,11 +5,12 @@
   "exports": {
     "./css": "./dist/css/tokens.css",
     "./fonts": "./dist/css/fonts.css",
+    "./reset": "./dist/css/reset.css",
     "./json": "./dist/json/tokens.json"
   },
   "scripts": {
     "build": "style-dictionary build --config style-dictionary.config.json",
-    "postbuild": "cp src/fonts.css dist/css/fonts.css",
+    "postbuild": "cp src/fonts.css dist/css/fonts.css && cp src/reset.css dist/css/reset.css",
     "dev": "style-dictionary build --config style-dictionary.config.json --watch"
   },
   "dependencies": {

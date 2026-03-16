@@ -38,6 +38,14 @@ export default defineConfig({
           res.setHeader("Content-Type", "text/css");
           res.end(fs.readFileSync(fontsPath, "utf-8"));
         });
+        server.middlewares.use("/reset.css", (_req, res) => {
+          const resetPath = path.resolve(
+            __dirname,
+            "../../packages/tokens/dist/css/reset.css"
+          );
+          res.setHeader("Content-Type", "text/css");
+          res.end(fs.readFileSync(resetPath, "utf-8"));
+        });
       },
     },
   ],

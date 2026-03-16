@@ -1,7 +1,14 @@
 /* DS Fonts
- * Import this alongside @ds/tokens/css in every implementation.
- * Font loading is owned by the token layer — never import fonts
- * directly in component implementations or demo pages.
+ *
+ * The token layer owns font values only, not font loading.
+ * Font loading is the responsibility of each app entry point.
+ *
+ * Web (Storybook/Vite): import @fontsource/inter and @fontsource/jetbrains-mono
+ *   in preview.ts or app entry point, then set font-family on body via global.css
+ * iOS: bundle Inter in Xcode project, reference via Info.plist
+ * Android: add Inter to res/font/ or use Downloadable Fonts API
+ *
+ * Font values are available as CSS custom properties after importing @ds/tokens/css:
+ *   --ds-font-family-sans: 'Inter', system-ui, -apple-system, sans-serif
+ *   --ds-font-family-mono: 'JetBrains Mono', 'Fira Code', monospace
  */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');

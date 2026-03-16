@@ -1,0 +1,8 @@
+/* App-level styles for the React component library.
+ * The reset (@ds/tokens/reset) handles base rendering normalization.
+ * Add only app-specific overrides here.
+ */
+
+body {
+  /* Any React Storybook specific overrides */
+}

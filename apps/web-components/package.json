@@ -16,6 +16,8 @@
   "dependencies": {
     "@ds/contracts": "workspace:*",
     "@ds/tokens": "workspace:*",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
     "lucide-static": "^0.577.0"
   },
   "devDependencies": {
