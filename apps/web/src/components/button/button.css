@@ -8,27 +8,27 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ds-space-xs);
+  gap: var(--ds-button-spacing-icon-gap);
   white-space: nowrap;
-  border-radius: var(--ds-radius-md);
-  border: var(--ds-border-width-sm) solid transparent;
+  border-radius: var(--ds-button-border-radius);
+  border: var(--ds-button-border-width) solid transparent;
   cursor: pointer;
 
   /* Typography */
   font-family: inherit;
-  font-size: var(--ds-text-size-sm);
-  font-weight: var(--ds-weight-semibold);
+  font-size: var(--ds-button-typography-label-size-md);
+  font-weight: var(--ds-button-typography-label-weight);
   letter-spacing: var(--ds-tracking-wide);
   line-height: 1;
   text-decoration: none;
 
   /* Transition */
   transition:
-    background-color var(--ds-duration-fast) ease,
-    border-color var(--ds-duration-fast) ease,
-    color var(--ds-duration-fast) ease,
-    opacity var(--ds-duration-fast) ease,
-    box-shadow var(--ds-duration-fast) ease;
+    background-color var(--ds-button-transition) ease,
+    border-color var(--ds-button-transition) ease,
+    color var(--ds-button-transition) ease,
+    opacity var(--ds-button-transition) ease,
+    box-shadow var(--ds-button-transition) ease;
 
   /* Focus */
   outline: none;
@@ -37,7 +37,7 @@
 .ds-button:focus-visible {
   box-shadow:
     0 0 0 var(--ds-focus-ring-offset) var(--ds-surface-default),
-    0 0 0 calc(var(--ds-focus-ring-offset) + var(--ds-focus-ring-width)) var(--ds-focus-default);
+    0 0 0 calc(var(--ds-focus-ring-offset) + var(--ds-focus-ring-width)) var(--ds-button-focus-ring);
 }
 
 .ds-button:disabled {
@@ -48,74 +48,74 @@
 /* ─── Sizes ──────────────────────────────────────────────────────────────────*/
 
 .ds-button--sm {
-  padding: var(--ds-space-xs) var(--ds-space-sm);
-  font-size: var(--ds-text-size-xs);
+  padding: var(--ds-button-spacing-padding-y-sm) var(--ds-button-spacing-padding-x-sm);
+  font-size: var(--ds-button-typography-label-size-sm);
 }
 
 .ds-button--md {
-  padding: var(--ds-space-sm) var(--ds-space-md);
+  padding: var(--ds-button-spacing-padding-y-md) var(--ds-button-spacing-padding-x-md);
 }
 
 .ds-button--lg {
-  padding: var(--ds-space-md) var(--ds-space-lg);
-  font-size: var(--ds-text-size-md);
+  padding: var(--ds-button-spacing-padding-y-lg) var(--ds-button-spacing-padding-x-lg);
+  font-size: var(--ds-button-typography-label-size-lg);
 }
 
 /* ─── Variants ───────────────────────────────────────────────────────────────*/
 
 .ds-button--primary {
-  background-color: var(--ds-brand-500);
-  color: var(--ds-neutral-0);
-  border-color: var(--ds-brand-500);
+  background-color: var(--ds-button-fill-brand);
+  color: var(--ds-button-text-inverse);
+  border-color: var(--ds-button-fill-brand);
 }
 
 .ds-button--primary:hover:not(:disabled) {
-  background-color: var(--ds-brand-600);
-  border-color: var(--ds-brand-600);
+  background-color: var(--ds-button-fill-brand-hover);
+  border-color: var(--ds-button-fill-brand-hover);
 }
 
 .ds-button--primary:active:not(:disabled) {
-  background-color: var(--ds-brand-700);
-  border-color: var(--ds-brand-700);
+  background-color: var(--ds-button-fill-brand-active);
+  border-color: var(--ds-button-fill-brand-active);
 }
 
 .ds-button--secondary {
   background-color: transparent;
-  color: var(--ds-brand-500);
-  border-color: var(--ds-brand-500);
+  color: var(--ds-button-text-brand);
+  border-color: var(--ds-button-border-brand);
 }
 
 .ds-button--secondary:hover:not(:disabled) {
-  background-color: var(--ds-neutral-50);
+  background-color: var(--ds-button-fill-surface);
 }
 
 .ds-button--secondary:active:not(:disabled) {
-  background-color: var(--ds-neutral-100);
+  background-color: var(--ds-button-fill-muted);
 }
 
 .ds-button--ghost {
   background-color: transparent;
-  color: var(--ds-brand-500);
+  color: var(--ds-button-text-brand);
   border-color: transparent;
 }
 
 .ds-button--ghost:hover:not(:disabled) {
-  background-color: var(--ds-neutral-50);
+  background-color: var(--ds-button-fill-surface);
 }
 
 .ds-button--ghost:active:not(:disabled) {
-  background-color: var(--ds-neutral-100);
+  background-color: var(--ds-button-fill-muted);
 }
 
 .ds-button--destructive {
-  background-color: var(--ds-error-500);
-  color: var(--ds-neutral-0);
-  border-color: var(--ds-error-500);
+  background-color: var(--ds-button-fill-danger);
+  color: var(--ds-button-text-inverse);
+  border-color: var(--ds-button-border-danger);
 }
 
 .ds-button--destructive:hover:not(:disabled) {
-  background-color: var(--ds-error-600);
-  border-color: var(--ds-error-600);
+  background-color: var(--ds-button-fill-danger-hover);
+  border-color: var(--ds-button-border-danger-hover);
 }
 
 /* ─── Modifiers ──────────────────────────────────────────────────────────────*/

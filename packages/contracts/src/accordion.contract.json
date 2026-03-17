@@ -8,35 +8,34 @@
   "platforms": ["web", "ios", "android"],
   "tokens": {
     "color": {
-      "background.item": "neutral.0",
-      "background.item.hover": "neutral.50",
-      "background.item.expanded": "neutral.50",
-      "border.item": "neutral.200",
-      "border.focus": "brand.500",
-      "text.trigger": "neutral.900",
-      "text.content": "neutral.800",
-      "icon.trigger": "neutral.500",
-      "focus.ring": "focus.default"
+      "fill.item":          "accordion.fill.item",
+      "fill.item-hover":    "accordion.fill.item-hover",
+      "fill.item-expanded": "accordion.fill.item-expanded",
+      "text.trigger":       "accordion.text.trigger",
+      "text.content":       "accordion.text.content",
+      "text.icon":          "accordion.text.icon",
+      "border.item":        "accordion.border.item",
+      "border.focus":       "accordion.border.focus",
+      "focus.ring":         "accordion.focus.ring"
     },
     "typography": {
-      "trigger.label.size": "textSize.md",
-      "trigger.label.weight": "weight.medium",
-      "content.size": "textSize.sm"
+      "trigger.label.size":   "accordion.typography.trigger-size",
+      "trigger.label.weight": "accordion.typography.trigger-weight",
+      "content.size":         "accordion.typography.content-size"
     },
     "spacing": {
-      "item.gap": "space.xs",
-      "item.padding.x": "space.md",
-      "item.padding.y": "space.sm",
-      "content.padding.top": "space.xs",
-      "group.gap": "space.sm"
+      "item.gap":            "accordion.spacing.item-gap",
+      "item.padding.x":      "accordion.spacing.item-padding-x",
+      "item.padding.y":      "accordion.spacing.item-padding-y",
+      "content.padding.top": "accordion.spacing.content-padding-top",
+      "group.gap":           "accordion.spacing.group-gap"
     },
     "border": {
-      "radius.item": "radius.md",
-      "width.item": "border.width.sm"
+      "radius.item": "accordion.border-radius",
+      "width.item":  "accordion.border-width"
     },
     "motion": {
-      "expand.duration": "duration.normal",
-      "expand.easing": "easing.ease-out"
+      "expand.duration": "accordion.expand-duration"
     }
   },
   "props": {

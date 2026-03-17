@@ -8,36 +8,41 @@
   "platforms": ["web", "ios", "android"],
   "tokens": {
     "color": {
-      "background.primary": "brand.500",
-      "background.primary.hover": "brand.600",
-      "background.secondary": "transparent",
-      "background.ghost": "transparent",
-      "text.primary": "neutral.0",
-      "text.secondary": "brand.500",
-      "text.ghost": "brand.500",
-      "border.secondary": "brand.500",
-      "focus.ring": "focus.default"
+      "fill.brand":        "button.fill.brand",
+      "fill.brand-hover":  "button.fill.brand-hover",
+      "fill.brand-active": "button.fill.brand-active",
+      "fill.danger":       "button.fill.danger",
+      "fill.danger-hover": "button.fill.danger-hover",
+      "fill.surface":      "button.fill.surface",
+      "fill.muted":        "button.fill.muted",
+      "text.inverse":      "button.text.inverse",
+      "text.brand":        "button.text.brand",
+      "border.brand":      "button.border.brand",
+      "border.danger":     "button.border.danger",
+      "border.danger-hover": "button.border.danger-hover",
+      "focus.ring":        "button.focus.ring"
     },
     "typography": {
-      "label.size": "textSize.sm",
-      "label.weight": "weight.semibold",
-      "label.tracking": "tracking.wide"
+      "label.size.sm":  "button.typography.label-size-sm",
+      "label.size.md":  "button.typography.label-size-md",
+      "label.size.lg":  "button.typography.label-size-lg",
+      "label.weight":   "button.typography.label-weight"
     },
     "spacing": {
-      "padding.x.sm": "space.sm",
-      "padding.x.md": "space.md",
-      "padding.x.lg": "space.lg",
-      "padding.y.sm": "space.xs",
-      "padding.y.md": "space.sm",
-      "padding.y.lg": "space.md",
-      "icon.gap": "space.xs"
+      "padding.x.sm": "button.spacing.padding-x-sm",
+      "padding.x.md": "button.spacing.padding-x-md",
+      "padding.x.lg": "button.spacing.padding-x-lg",
+      "padding.y.sm": "button.spacing.padding-y-sm",
+      "padding.y.md": "button.spacing.padding-y-md",
+      "padding.y.lg": "button.spacing.padding-y-lg",
+      "icon.gap":     "button.spacing.icon-gap"
     },
     "border": {
-      "radius": "radius.md",
-      "width": "border.width.sm"
+      "radius": "button.border-radius",
+      "width":  "button.border-width"
     },
     "motion": {
-      "transition": "duration.fast"
+      "transition": "button.transition"
     }
   },
   "props": {

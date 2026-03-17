@@ -1,0 +1,43 @@
+{
+  "button": {
+    "fill": {
+      "brand":        { "$value": "{brand.500}",      "$type": "color", "$description": "Primary button background" },
+      "brand-hover":  { "$value": "{brand.600}",      "$type": "color" },
+      "brand-active": { "$value": "{brand.700}",      "$type": "color" },
+      "danger":       { "$value": "{error.500}",      "$type": "color", "$description": "Destructive button background" },
+      "danger-hover": { "$value": "{error.600}",      "$type": "color" },
+      "surface":      { "$value": "{surface.subtle}", "$type": "color", "$description": "Hover fill for secondary/ghost" },
+      "muted":        { "$value": "{surface.muted}",  "$type": "color", "$description": "Active fill for secondary/ghost" }
+    },
+    "text": {
+      "inverse": { "$value": "{neutral.0}",   "$type": "color", "$description": "Label on filled buttons" },
+      "brand":   { "$value": "{brand.500}",   "$type": "color", "$description": "Label on secondary/ghost buttons" }
+    },
+    "border": {
+      "brand":        { "$value": "{border.brand}", "$type": "color", "$description": "Secondary button border" },
+      "danger":       { "$value": "{error.500}",    "$type": "color" },
+      "danger-hover": { "$value": "{error.600}",    "$type": "color" }
+    },
+    "focus": {
+      "ring": { "$value": "{focus.default}", "$type": "color" }
+    },
+    "spacing": {
+      "padding-x-sm": { "$value": "{space.sm}", "$type": "dimension" },
+      "padding-x-md": { "$value": "{space.md}", "$type": "dimension" },
+      "padding-x-lg": { "$value": "{space.lg}", "$type": "dimension" },
+      "padding-y-sm": { "$value": "{space.xs}", "$type": "dimension" },
+      "padding-y-md": { "$value": "{space.sm}", "$type": "dimension" },
+      "padding-y-lg": { "$value": "{space.md}", "$type": "dimension" },
+      "icon-gap":     { "$value": "{space.xs}", "$type": "dimension" }
+    },
+    "typography": {
+      "label-size-sm": { "$value": "{textSize.sm}", "$type": "dimension" },
+      "label-size-md": { "$value": "{textSize.md}", "$type": "dimension" },
+      "label-size-lg": { "$value": "{textSize.lg}", "$type": "dimension" },
+      "label-weight":  { "$value": "{weight.semibold}", "$type": "fontWeight" }
+    },
+    "border-radius": { "$value": "{radius.md}",       "$type": "dimension" },
+    "border-width":  { "$value": "{border.width.sm}", "$type": "dimension" },
+    "transition":    { "$value": "{duration.fast}",   "$type": "duration" }
+  }
+}
