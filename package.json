@@ -5,6 +5,8 @@
   "description": "Design system component contract repository",
   "scripts": {
     "build": "pnpm -r build",
+    "dev": "pnpm --filter mcp-server dev",
+    "dev:wc": "pnpm --filter @ds/web-components dev",
     "dev:mcp": "pnpm --filter @ds/mcp-server dev",
     "dev:web": "pnpm --filter @ds/web dev",
     "kill:web": "lsof -ti :6006 | xargs kill 2>/dev/null || true",
