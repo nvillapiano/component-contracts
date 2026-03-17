@@ -123,3 +123,23 @@ apps/web/src/
 - Don't hand-roll keyboard navigation or focus management for complex components
 - Don't merge contracts with `status: draft` to main without a plan to implement
 - Don't skip `pnpm validate` before pushing contract changes
+
+---
+
+## Figma Library
+
+### Variable architecture
+- Two collections only: `Primitives` (raw values, single mode) and `Semantic` (aliases → Primitives, single mode).
+- Components bind exclusively to Semantic variables — never directly to Primitives.
+- Letter-spacing (tracking) is not stored as a Variable — em units are incompatible with Figma FLOAT. Handle via Text Styles.
+- Chained aliases are permitted: `border/brand → Semantic:brand/500 → Primitive:color/blue/500`.
+
+### evaluate_script safety
+- Every script: async try/catch, figma.closePlugin() in finally, return JSON via closePlugin message.
+- Never delete or modify existing variables or nodes.
+- Work incrementally: one group per script, validate after each group before continuing.
+
+### Naming conventions
+- Variables use "/" as group separator, matching the W3C DTCG token path: `color/blue/500`, `space/md`.
+- Components use "/" for Figma asset panel grouping: `Accordion/Item`, `Accordion/Trigger`.
+- Component property names match contract prop names exactly: `variant`, `size`, `state`.

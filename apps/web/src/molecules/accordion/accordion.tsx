@@ -1,6 +1,7 @@
 import * as RadixAccordion from "@radix-ui/react-accordion";
 import { cva, type VariantProps } from "class-variance-authority";
 import { clsx } from "clsx";
+import { ChevronDown } from "lucide-react";
 import {
   forwardRef,
   type ComponentPropsWithoutRef,
@@ -139,7 +140,9 @@ export const AccordionTrigger = forwardRef<
         {...props}
       >
         <span className="ds-accordion__label">{children}</span>
-        <span className="ds-accordion__icon" aria-hidden="true" />
+        <span className="ds-accordion__icon" aria-hidden="true">
+          <ChevronDown size={16} />
+        </span>
       </RadixAccordion.Trigger>
     </RadixAccordion.Header>
   );

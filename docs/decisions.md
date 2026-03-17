@@ -234,3 +234,119 @@ JSON Schema draft-07 supports `if/then/else` for conditional validation, but app
 - Implementation layers (React, SwiftUI, Compose) are responsible for enforcing conditional prop logic
 - Agents consuming contracts must read prop descriptions carefully, not just type/values fields
 - A future `constraints` field could be added to the schema to express these rules in a structured but non-validating way (documentation only)
+
+---
+
+## ADR-011: Figma as visual source of truth
+
+**Date:** 2026-03  
+**Status:** Accepted
+
+### Context
+The system has multiple platform implementations (React, Web Components, iOS, Android) that must maintain visual parity. Initially React was treated as the visual reference because it was the first implementation. This is a pragmatic shortcut, not a principled decision.
+
+### Decision
+Figma is the designated visual source of truth for all platform implementations. Until Figma token sync is implemented, the React implementation serves as the interim visual reference for web targets only. Native targets follow platform conventions.
+
+### Rationale
+- Figma is where design decisions are made — it should be authoritative, not derivative
+- Using React as the reference couples visual truth to a specific technology, which is wrong
+- W3C DTCG token format (already adopted) is compatible with Figma variables and Tokens Studio
+- Chromatic has a Figma integration that enables direct story-to-frame comparison
+- This decision is consistent with the broader principle that implementations are derived from specs, not from each other
+
+### Consequences
+- Figma variable sync (`@ds/tokens` ↔ Figma API) becomes a required milestone before this decision is fully realized
+- In the interim, visual drift between React and Web Components is acceptable if both match the Figma design
+- The `.cursor/rules` visual reference rule is scoped to web targets only — native targets are exempt
+- A token change in Figma that isn't reflected in `@ds/tokens` is a bug
+
+---
+
+## ADR-012: Separate Storybook instances per web target
+
+**Date:** 2026-03  
+**Status:** Accepted
+
+### Context
+The system has two web implementations (`apps/web` React and `apps/web-components`), each with their own Storybook. There was consideration of merging them into a single Storybook to simplify visual comparison.
+
+### Decision
+Each web target maintains its own separate Storybook instance. They are not merged. Chromatic tracks both as separate projects under the same organization.
+
+### Rationale
+- Merging Storybooks creates build coupling — a React-specific dependency could break the web components build and vice versa
+- Separate instances make it clear which implementation a story belongs to
+- Chromatic supports multiple projects and can display them alongside each other without requiring a merged Storybook
+- As native targets are added (iOS, Android), their visual testing tools are entirely separate — establishing the pattern of "one test harness per target" is correct
+
+### Consequences
+- Visual comparison across implementations is a manual step until Chromatic baselines are established
+- CI must maintain parallel test jobs — one per Storybook instance
+- Story structure and variant naming must be consistent across implementations so human comparison is straightforward
+
+---
+
+## ADR-013: 90% parity definition and PR gate criteria
+
+**Date:** 2026-03  
+**Status:** Accepted
+
+### Context
+The system targets four platforms (React, Web Components, iOS, Android). "Parity" is a vague goal without a concrete definition. We needed a clear, enforceable gate that determines when a component implementation is ready for human review.
+
+### Decision
+"90% parity" means a component is accurate and complete enough to send to PR for human-in-the-loop review. It does not mean pixel-perfect cross-platform matching. A component meets the PR gate when all five criteria pass:
+
+1. All contract variants are implemented
+2. Behavioral tests pass (interactions, states, keyboard navigation)
+3. Zero accessibility violations (WCAG AA)
+4. Visual snapshot baseline established (Chromatic for web; platform snapshot tests for native)
+5. Token values match contract (no unresolved token paths)
+
+### Rationale
+- "Ready for PR" is a more useful definition than "perfect" — it acknowledges that human review is part of the process
+- The five criteria map directly to the contract's structure: variants → props/variants, behavioral tests → behavior block, a11y → accessibility block, visual → Figma/Chromatic, tokens → tokens block
+- This definition works across all four platforms by substituting the appropriate tooling per platform
+- 10% tolerance accounts for intentional platform-convention deviations that are correct but different
+
+### Consequences
+- CI must enforce criteria 1–3 automatically; criteria 4–5 require tooling to be in place
+- Until Chromatic is active, criterion 4 is a manual check
+- Until the validator checks token existence, criterion 5 is a manual check via ContractTokenTable
+- Platform-specific deviations that fail criterion 1–3 must be documented in `platformNotes` in the contract
+
+---
+
+## ADR-014: Font loading strategy — token values vs. font loading
+
+**Date:** 2026-03  
+**Status:** Accepted
+
+### Context
+The system needs a consistent approach to loading the design system typeface (Inter) across all implementations. An initial approach attempted to own font loading inside `@ds/tokens` via a `fonts.css` export. Several iterations were tried:
+
+1. Google Fonts `@import` in `@ds/tokens/fonts.css` — failed in Storybook iframes due to CSP restrictions on external requests
+2. Fontsource `@import` in `@ds/tokens/fonts.css` — failed because relative paths break when CSS is copied to `dist/`, and Vite can't resolve node_modules from a static CSS file
+3. Fontsource imports in `apps/web/.storybook/preview.ts` with a global body style — works correctly
+
+### Decision
+The token layer owns font **values** only. App entry points own font **loading** and **application**.
+
+Specifically:
+- `@ds/tokens` defines `--ds-font-family-sans` and `--ds-font-family-mono` as CSS custom properties
+- `@ds/tokens/src/fonts.css` exists as a documentation comment only — it describes the loading strategy per platform but contains no actual imports
+- Each app entry point imports fontsource packages directly and sets `font-family` on `body` via a global CSS file
+- Native platforms (iOS, Android) bundle fonts per platform conventions — the token value tells them which font, the platform determines how to load it
+
+### Rationale
+- Vite resolves `@import` statements in CSS files relative to the file location — this breaks when CSS is copied to `dist/` during build
+- Storybook's iframe context restricts external font requests (CSP) — self-hosted fonts via fontsource are required
+- Font loading is fundamentally an app-level concern, not a design token concern — tokens describe design decisions, not runtime asset loading
+- This approach is consistent with how native platforms handle fonts — they don't share a loading mechanism with web
+
+### Consequences
+- Every web app that consumes `@ds/tokens` must also install and import `@fontsource/inter` and `@fontsource/jetbrains-mono` in its entry point
+- This is documented in `.cursor/rules` and in `@ds/tokens/src/fonts.css` as a comment
+- When the typeface changes, two things must be updated: the token value in `@ds/tokens` and the fontsource import in each app entry point — this is a known maintenance surface
+- The `@ds/tokens/fonts` export is kept for documentation purposes but contains no functional CSS
