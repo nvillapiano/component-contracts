@@ -143,3 +143,16 @@ apps/web/src/
 - Variables use "/" as group separator, matching the W3C DTCG token path: `color/blue/500`, `space/md`.
 - Components use "/" for Figma asset panel grouping: `Accordion/Item`, `Accordion/Trigger`.
 - Component property names match contract prop names exactly: `variant`, `size`, `state`.
+
+
+---
+
+
+## Token architecture (3 tiers — enforced)
+- Tier 1 Primitives: packages/tokens/src/primitive/*.tokens.json — raw values only
+- Tier 2 Semantic:   packages/tokens/src/semantic/semantic.tokens.json — aliases into Tier 1
+- Tier 3 Component:  packages/tokens/src/component/{id}.tokens.json — aliases into Tier 2
+- Components (CSS, Figma, native) consume ONLY Tier 3 tokens. Never Tier 1 or 2 directly.
+- Contracts reference Tier 3 token names in their tokens section.
+- Adding a component requires: contract → component token file → CSS update → Figma styles.
+  These four always move together. No partial updates.
