@@ -1,0 +1,6 @@
+# Figma file keys for component-contracts
+# Copy this file to .figma and fill in your values
+# Never commit .figma — it contains project-specific identifiers
+
+FIGMA_TEST_FILE_KEY=your_test_file_key_here
+FIGMA_LIBRARY_FILE_KEY=your_library_file_key_here

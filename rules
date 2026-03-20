@@ -161,6 +161,11 @@ Plugin API syntax rules — do not duplicate them here.
 - Component property names match contract prop names exactly: `variant`, `size`, `state`
 - Paint styles named as `ComponentName/Role/Variant`: `Button/Fill/Brand`, `Button/Text/Inverse`
 
+### Figma configuration
+Always read `.figma` from the project root before any Figma task.
+Extract FIGMA_FILE_KEY for use_figma calls.
+Never output FIGMA_ACCESS_TOKEN in any response.
+
 
 ---
 
