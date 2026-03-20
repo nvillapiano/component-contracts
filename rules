@@ -128,21 +128,38 @@ apps/web/src/
 
 ## Figma Library
 
-### Variable architecture
-- Two collections only: `Primitives` (raw values, single mode) and `Semantic` (aliases → Primitives, single mode).
-- Components bind exclusively to Semantic variables — never directly to Primitives.
-- Letter-spacing (tracking) is not stored as a Variable — em units are incompatible with Figma FLOAT. Handle via Text Styles.
-- Chained aliases are permitted: `border/brand → Semantic:brand/500 → Primitive:color/blue/500`.
+### Agent prerequisite
+Always load the `figma-use` skill before any `use_figma` call. Load `figma-generate-library` 
+when building or updating variable collections or component sets. These skills own all 
+Plugin API syntax rules — do not duplicate them here.
 
-### evaluate_script safety
-- Every script: async try/catch, figma.closePlugin() in finally, return JSON via closePlugin message.
-- Never delete or modify existing variables or nodes.
-- Work incrementally: one group per script, validate after each group before continuing.
+### Variable architecture
+- Two collections: `Primitives` (raw values, mode: `Value`) and `Semantic` 
+  (aliases → Primitives, mode: `Value`)
+- Both collections have a ghost empty mode (all values = 0) created automatically by 
+  the API — this is expected. Always call `setExplicitVariableModeForCollection` on 
+  every component node and all children recursively to force the `Value` mode.
+- Components bind exclusively to Semantic variables — never directly to Primitives
+- Letter-spacing is not stored as a Variable — em units are incompatible with Figma 
+  FLOAT. Handle via Text Styles only.
+- Chained aliases are permitted: `border/brand → Semantic:brand/500 → Primitive:color/blue/500`
+
+### Token architecture (3 tiers — enforced)
+- Tier 1 Primitives: `packages/tokens/src/primitive/*.tokens.json` — raw values only
+- Tier 2 Semantic: `packages/tokens/src/semantic/semantic.tokens.json` — aliases into Tier 1
+- Tier 3 Component: `packages/tokens/src/component/{id}.tokens.json` — aliases into Tier 2
+- Components (CSS, Figma, native) consume ONLY Tier 3 tokens. Never Tier 1 or 2 directly.
+- Contracts reference Tier 3 token names in their `tokens` section.
+- Adding a component requires: contract → component token file → CSS update → Figma styles.
+  These four always move together. No partial updates.
+- Figma paint styles are Tier 3: named `Button/Fill/Brand`, bound to Semantic variables.
+  CSS output pattern: `--ds-button-fill-brand: var(--ds-brand-500)`
 
 ### Naming conventions
-- Variables use "/" as group separator, matching the W3C DTCG token path: `color/blue/500`, `space/md`.
-- Components use "/" for Figma asset panel grouping: `Accordion/Item`, `Accordion/Trigger`.
-- Component property names match contract prop names exactly: `variant`, `size`, `state`.
+- Variables use `/` as group separator matching W3C DTCG: `color/blue/500`, `space/md`
+- Components use `/` for Figma asset panel grouping: `Accordion/Item`, `Button/Primary`
+- Component property names match contract prop names exactly: `variant`, `size`, `state`
+- Paint styles named as `ComponentName/Role/Variant`: `Button/Fill/Brand`, `Button/Text/Inverse`
 
 
 ---
