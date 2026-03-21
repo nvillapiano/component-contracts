@@ -5,4 +5,4 @@ dist
 .DS_Store
 .env
 .cursor/mcp.json
-.figma
+.component-contracts
