@@ -1,11 +1,15 @@
 {
   "$schema": "../../schema/schema.json",
   "id": "accordion",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "displayName": "Accordion",
   "description": "Molecule: collapsible disclosure list composed of atoms (buttons, text) and structured as a compound component: Accordion, AccordionItem, AccordionTrigger, AccordionContent.",
   "status": "draft",
-  "platforms": ["web", "ios", "android"],
+  "platforms": [
+    "web",
+    "ios",
+    "android"
+  ],
   "tokens": {
     "color": {
       "background.item": "neutral.0",
@@ -43,7 +47,10 @@
     "type": {
       "type": "enum",
       "description": "Controls whether multiple items can be expanded at once.",
-      "values": ["single", "multiple"],
+      "values": [
+        "single",
+        "multiple"
+      ],
       "default": "single"
     },
     "collapsible": {
@@ -73,7 +80,10 @@
     "orientation": {
       "type": "enum",
       "description": "Keyboard navigation orientation. Vertical accordions use Up/Down, horizontal use Left/Right.",
-      "values": ["vertical", "horizontal"],
+      "values": [
+        "vertical",
+        "horizontal"
+      ],
       "default": "vertical",
       "tokenMapped": false
     }
@@ -86,7 +96,9 @@
       "props": {
         "type": "single",
         "collapsible": false,
-        "defaultValue": ["item-1"]
+        "defaultValue": [
+          "item-1"
+        ]
       }
     },
     {
@@ -96,7 +108,9 @@
       "props": {
         "type": "single",
         "collapsible": true,
-        "defaultValue": ["item-1"]
+        "defaultValue": [
+          "item-1"
+        ]
       }
     },
     {
@@ -105,11 +119,20 @@
       "description": "Multiple items can be expanded at once.",
       "props": {
         "type": "multiple",
-        "defaultValue": ["item-1", "item-2"]
+        "defaultValue": [
+          "item-1",
+          "item-2"
+        ]
       }
     }
   ],
-  "states": ["default", "hover", "focus", "active", "disabled"],
+  "states": [
+    "default",
+    "hover",
+    "focus",
+    "active",
+    "disabled"
+  ],
   "behavior": {
     "focusable": true,
     "pressable": true,
@@ -168,22 +191,61 @@
       "root": {
         "description": "Container for the accordion items. Renders the Accordion root component.",
         "required": true,
-        "allowedComponents": ["AccordionItem"]
+        "allowedComponents": [
+          "AccordionItem"
+        ]
       },
       "item": {
         "description": "Container for a single accordion entry. Wraps a trigger and its associated content.",
         "required": true,
-        "allowedComponents": ["AccordionTrigger", "AccordionContent"]
+        "allowedComponents": [
+          "AccordionTrigger",
+          "AccordionContent"
+        ]
       },
       "trigger": {
-        "description": "Interactive element that toggles its associated content. Typically rendered as a button atom.",
+        "description": "Interactive element that toggles its associated content.",
         "required": true,
-        "allowedComponents": ["text", "icon"]
+        "childOrder": [
+          "label",
+          "chevron"
+        ],
+        "children": {
+          "label": {
+            "description": "Trigger label text.",
+            "type": "text",
+            "figma": {
+              "textProp": "triggerLabel"
+            }
+          },
+          "chevron": {
+            "description": "Disclosure indicator icon. Trails the label. Rotates 90deg when expanded \u2014 not variable-bindable in Figma; swap for an icon component when available.",
+            "type": "icon",
+            "figma": {
+              "position": "trailing",
+              "defaultGlyph": "\u25be",
+              "defaultRotation": 0,
+              "expandedRotation": -90,
+              "rotateOnExpand": true,
+              "width": 16,
+              "height": 16,
+              "sizing": "fixed",
+              "note": "Must be fixed square so dimensions are preserved on rotation. Rendered as text glyph placeholder. Swap for INSTANCE_SWAP when an icon library is available."
+            }
+          }
+        }
       },
       "content": {
         "description": "Region that shows or hides detailed content for an item.",
         "required": true,
-        "allowedComponents": ["typography", "layout"]
+        "allowedComponents": [
+          "typography",
+          "layout"
+        ],
+        "figma": {
+          "textProp": "content",
+          "visibleWhen": "Expanded=true"
+        }
       }
     }
   },
@@ -195,11 +257,15 @@
       "Use multiple mode when users benefit from scanning several sections simultaneously."
     ],
     "dont": [
-      "Don't use Accordion for primary navigation — prefer navigation components instead.",
+      "Don't use Accordion for primary navigation \u2014 prefer navigation components instead.",
       "Don't nest interactive controls inside triggers; keep triggers as simple button-like atoms.",
       "Don't rely solely on animation to convey expanded state; keep aria-expanded in sync."
     ],
-    "relatedComponents": ["disclosure", "tabs", "popover"]
+    "relatedComponents": [
+      "disclosure",
+      "tabs",
+      "popover"
+    ]
   },
   "platformNotes": {
     "web": "Implement using ARIA accordion guidance: triggers as buttons with aria-expanded and aria-controls pointing at region content.",
@@ -207,6 +273,29 @@
     "android": "Map Accordion to a column of expandable items, e.g., Material3 ExposedDropdownMenuBox or ExpansionPanels."
   },
   "changelog": [
+    {
+      "version": "0.2.2",
+      "date": "2026-03-21",
+      "changes": [
+        "Chevron fixed square dimensions added (16\u00d716, sizing: fixed) \u2014 ensures consistent layout on rotation"
+      ]
+    },
+    {
+      "version": "0.2.1",
+      "date": "2026-03-21",
+      "changes": [
+        "Chevron figma hints made explicit: defaultGlyph \u25be, defaultRotation 0, expandedRotation -90"
+      ]
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-03-21",
+      "changes": [
+        "Added explicit slot composition with childOrder for trigger slot \u2014 label leads, chevron trails",
+        "Added figma rendering hints to slot children (textProp, position, rotateOnExpand, visibleWhen)",
+        "Chevron documented as trailing disclosure indicator with swap note"
+      ]
+    },
     {
       "version": "0.1.0",
       "date": "2026-03-15",

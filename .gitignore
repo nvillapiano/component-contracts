@@ -6,3 +6,4 @@ dist
 .env
 .cursor/mcp.json
 .component-contracts
+scripts/

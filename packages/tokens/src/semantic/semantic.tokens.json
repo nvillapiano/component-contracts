@@ -21,7 +21,19 @@
   "border": {
     "default":     { "$value": "{color.neutral.200}", "$type": "color" },
     "strong":      { "$value": "{color.neutral.300}", "$type": "color" },
-    "brand":       { "$value": "{brand.500}",         "$type": "color" }
+    "brand":       { "$value": "{brand.500}",         "$type": "color" },
+    "width": {
+      "sm":        { "$value": "{border.width.sm}",   "$type": "dimension" },
+      "md":        { "$value": "{border.width.md}",   "$type": "dimension" }
+    }
+  },
+  "radius": {
+    "none":        { "$value": "{radius.none}",       "$type": "dimension" },
+    "sm":          { "$value": "{radius.sm}",         "$type": "dimension" },
+    "md":          { "$value": "{radius.md}",         "$type": "dimension" },
+    "lg":          { "$value": "{radius.lg}",         "$type": "dimension" },
+    "xl":          { "$value": "{radius.xl}",         "$type": "dimension" },
+    "full":        { "$value": "{radius.full}",       "$type": "dimension" }
   },
   "feedback": {
     "error": {
@@ -40,12 +52,22 @@
     "ringWidth":   { "$value": "2px",               "$type": "dimension" },
     "ringOffset":  { "$value": "2px",               "$type": "dimension" }
   },
+  "duration": {
+    "fast":        { "$value": "{duration.fast}",   "$type": "duration" },
+    "normal":      { "$value": "{duration.normal}", "$type": "duration" },
+    "slow":        { "$value": "{duration.slow}",   "$type": "duration" }
+  },
+  "easing": {
+    "ease-in":     { "$value": "{easing.ease-in}",  "$type": "cubicBezier" },
+    "ease-out":    { "$value": "{easing.ease-out}", "$type": "cubicBezier" },
+    "ease-in-out": { "$value": "{easing.ease-in-out}", "$type": "cubicBezier" }
+  },
   "space": {
-    "xs":  { "$value": "{space.1}", "$type": "dimension" },
-    "sm":  { "$value": "{space.2}", "$type": "dimension" },
-    "md":  { "$value": "{space.4}", "$type": "dimension" },
-    "lg":  { "$value": "{space.6}", "$type": "dimension" },
-    "xl":  { "$value": "{space.8}", "$type": "dimension" },
+    "xs":  { "$value": "{space.1}",  "$type": "dimension" },
+    "sm":  { "$value": "{space.2}",  "$type": "dimension" },
+    "md":  { "$value": "{space.4}",  "$type": "dimension" },
+    "lg":  { "$value": "{space.6}",  "$type": "dimension" },
+    "xl":  { "$value": "{space.8}",  "$type": "dimension" },
     "2xl": { "$value": "{space.12}", "$type": "dimension" }
   },
   "textSize": {
