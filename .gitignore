@@ -4,3 +4,4 @@ dist
 *.d.ts.map
 .DS_Store
 .env
+.component-contracts
