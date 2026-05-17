@@ -17,10 +17,14 @@
     "types:generate": "pnpm --filter @ds/schema generate",
     "tokens:build": "pnpm --filter @ds/tokens build",
     "test": "pnpm --filter @ds/web test",
-    "test:ci": "pnpm --filter @ds/web test:ci"
+    "test:ci": "pnpm --filter @ds/web test:ci",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.0",
+    "@commitlint/cli": "^21.0.1",
+    "@commitlint/config-conventional": "^21.0.1",
+    "husky": "^9.1.7",
     "typescript": "^5.4.0"
   },
   "engines": {
