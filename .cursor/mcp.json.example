@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "component-contracts": {
-      "command": "npx",
-      "args": ["tsx", "packages/mcp-server/src/server.ts"],
+      "command": "tsx",
+      "args": ["packages/mcp-server/src/server.ts"],
       "env": {
         "CONTRACTS_DIR": "packages/contracts/src"
       }

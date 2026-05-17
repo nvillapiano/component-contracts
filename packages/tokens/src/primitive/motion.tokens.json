@@ -11,6 +11,7 @@
     "ease":      { "$value": "ease",                      "$type": "cubicBezier" },
     "ease-in":   { "$value": "ease-in",                   "$type": "cubicBezier" },
     "ease-out":  { "$value": "ease-out",                  "$type": "cubicBezier" },
+    "ease-in-out": { "$value": "ease-in-out",             "$type": "cubicBezier" },
     "spring":    { "$value": "cubic-bezier(0.34,1.56,0.64,1)", "$type": "cubicBezier" }
   }
 }
