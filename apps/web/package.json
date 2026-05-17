@@ -51,5 +51,8 @@
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns": ["/node_modules/", "/.claude/"]
   }
 }
