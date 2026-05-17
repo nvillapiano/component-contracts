@@ -13,7 +13,7 @@
     "dev": "storybook dev -p 6006",
     "build": "tsc && vite build",
     "build:storybook": "storybook build",
-    "test": "storybook test",
+    "test": "storybook build && npx http-server storybook-static -p 6006 --silent & npx wait-on http://127.0.0.1:6006 && test-storybook; kill %1",
     "test:ci": "test-storybook"
   },
   "dependencies": {
