@@ -5,3 +5,6 @@ dist
 .DS_Store
 .env
 .component-contracts
+.cursor/mcp.json
+scripts/
+*.zip
