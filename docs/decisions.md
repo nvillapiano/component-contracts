@@ -191,8 +191,8 @@ Chromatic is noted as a planned addition but deferred until after the proof-of-c
 
 ## ADR-009: Figma sync deferred
 
-**Date:** 2025-03  
-**Status:** Accepted
+**Date:** 2025-03
+**Status:** Superseded by ADR-015
 
 ### Context
 Contracts contain exactly the data needed to keep Figma variables and component properties in sync. The Figma API already supports reading/writing variables.
@@ -350,3 +350,145 @@ Specifically:
 - This is documented in `.cursor/rules` and in `@ds/tokens/src/fonts.css` as a comment
 - When the typeface changes, two things must be updated: the token value in `@ds/tokens` and the fontsource import in each app entry point — this is a known maintenance surface
 - The `@ds/tokens/fonts` export is kept for documentation purposes but contains no functional CSS
+
+---
+
+## ADR-015: Contract → Figma generation via AI skills (supersedes ADR-009)
+
+**Date:** 2026-03
+**Status:** Accepted
+
+### Context
+ADR-009 deferred Figma sync, anticipating bidirectional REST API or Tokens Studio integration. Figma's MCP beta opened a different path: agents can write directly to the Figma canvas via tool calls.
+
+### Decision
+Use AI agent skills (SKILL.md files) running via the Figma MCP to generate component sets from contracts. The direction is one-way: **contract → Figma**. The Figma → contract pull direction is not implemented.
+
+Two skills handle the pipeline:
+- `cc-figma-tokens` — builds Primitive and Semantic variable collections from W3C DTCG token files
+- `cc-figma-component` — generates fully variable-bound component sets from contracts
+
+### Rationale
+- MCP gives agents direct canvas write access without a separate plugin or REST integration
+- Skills encode rendering rules in a version-controlled, auditable format (SKILL.md)
+- Contracts drive generation deterministically — same contract produces the same component every run
+- Agent-driven generation is more flexible than REST sync: complex layout, composition, and binding logic can be expressed in natural language + code examples within the skill
+
+### Consequences
+- Figma components are regenerated when contracts change — generation is idempotent by design
+- A `⚠️ Generation Notes` canvas frame documents all agent decisions, assumptions, and API limitations per component (see ADR-019)
+- The approach is one-directional: contract is authoritative, Figma is a build target
+- Figma → `@ds/tokens` pull sync remains an open item (Issue #4 / sync-to-figma)
+- ADR-009 is superseded by this decision
+
+---
+
+## ADR-016: Skill vs contract vs rules — rendering rule placement
+
+**Date:** 2026-03
+**Status:** Accepted
+
+### Context
+When building the Figma generation skills, questions arose about where component-specific rendering decisions belong — e.g., accordion chevron trails the label, button icon slots are hidden by default, chevron is a fixed 16×16 square.
+
+### Decision
+Three layers, strict placement:
+
+| Layer | What belongs there | Example |
+|---|---|---|
+| **Contract** (`composition.slots.figma`) | Component-specific rendering decisions | Chevron position, slot child order, icon sizing |
+| **Skill** (SKILL.md) | Generic rendering rules that apply to all components | HUG sizing on all frames, rotation in degrees |
+| **Rules file** (`.cursor/rules` or `.claude/rules`) | IDE/workspace conventions | Model selection, file cleanup, debug mode |
+
+### Rationale
+- The contract is the source of truth. If a rendering decision is specific to a component, it must live in the contract where it is versioned, validated, and diffable — not embedded as special-case knowledge in a generic skill
+- Skills that encode component-specific behavior become fragile: they grow a list of named exceptions and break when a new component doesn't fit the assumed pattern
+- Generic rendering rules in skills remain stable across all components
+
+### Consequences
+- Contracts have a `composition` section with a `figma` hints namespace per slot child
+- Skills are fully component-agnostic — they read all rendering hints from the contract
+- Adding a new component never requires a skill change unless a new generic capability is needed
+
+---
+
+## ADR-017: SKILL.md as the IDE-agnostic skill distribution format
+
+**Date:** 2026-03
+**Status:** Accepted
+
+### Context
+The cc-figma-tokens and cc-figma-component skills were built for Cursor's Composer. As the project moves to Claude Code and potentially other MCP-capable clients, a portability strategy is needed.
+
+### Decision
+SKILL.md is the canonical format for encoding agent task knowledge. The skill content is IDE-agnostic. Each IDE receives only an adapter layer (directory location, invocation pattern). Skills are centralized in a dedicated public repo (`component-contracts-figma`) and distributed to IDEs via their respective conventions.
+
+### Rationale
+- Skill instructions are prompt engineering, not IDE logic — they contain no IDE-specific syntax
+- Cursor, Claude Code, and any future MCP client can run the same SKILL.md content with minor adapter differences
+- Centralizing skills in a separate repo enables community contribution and versioning independent of the component implementation
+
+### Consequences
+- The `component-contracts-figma` repo is the source of truth for all skills
+- Adding support for a new IDE requires only an adapter (copy to the right directory, wire up the invocation command) — not a skill rewrite
+- Skills must be written to avoid IDE-specific patterns (no Cursor-only syntax, no Claude Code-only syntax)
+
+---
+
+## ADR-018: Tier 3 component tokens — stored files vs runtime derivation
+
+**Date:** 2026-03
+**Status:** Accepted — Option B (stored files)
+
+### Context
+The 3-tier token architecture has two interpretations for Tier 3 (component tokens):
+
+**Option A — Runtime derivation (current `figma-skill-test` approach):** Contracts reference Semantic tokens directly (`"background.primary": "brand.500"`). The Figma skill derives component-specific token names at runtime during generation (e.g., `--ds-button-fill-brand`). No Tier 3 files exist on disk.
+
+**Option B — Stored files (`web-components-scaffold-and-generation` approach):** Contracts reference Tier 3 token names (`"fill.brand": "button.fill.brand"`). Tier 3 tokens live in `packages/tokens/src/component/{id}.tokens.json`. Style Dictionary builds them into `--ds-button-fill-brand` CSS custom properties.
+
+### Decision
+Store Tier 3 tokens as explicit files in `packages/tokens/src/component/{id}.tokens.json`. Contracts reference Tier 3 token names. Style Dictionary builds them into component-scoped CSS custom properties (`--ds-button-fill-brand`). Key tradeoffs:
+
+| | Option A | Option B |
+|---|---|---|
+| Files to maintain | Fewer | More (one file per component) |
+| CSS output | Runtime-derived, not a build artifact | Build artifact — `--ds-button-*` vars in CSS |
+| Token auditability | Implicit (in contract + skill) | Explicit (in token file) |
+| Refactoring | Change contract, skill updates | Change token file only, contract stable |
+| Figma sync | Works today | Works today |
+
+Option B is architecturally stricter and aligns better with Style Dictionary's intended use. Option A is simpler and already working.
+
+### Consequences
+- This decision gates the web-components branch merge strategy
+- Whichever is chosen, the contracts and token files must be internally consistent
+
+---
+
+## ADR-019: Generation Notes frame as transparency layer
+
+**Date:** 2026-03
+**Status:** Accepted
+
+### Context
+AI-generated Figma components make decisions that aren't visible to designers: token conflicts, Plugin API limitations, props that can't be wired automatically, approximations. Without documentation, these silent decisions become bugs that are hard to trace.
+
+### Decision
+Every generated component page includes a `⚠️ Generation Notes` frame below the component sets. The frame documents all agent decisions, assumptions, and known limitations for that generation run.
+
+Standard categories documented in the frame:
+- Token gaps (Semantic variables that couldn't be resolved)
+- API limitations (capabilities the Plugin API doesn't support)
+- Prop wiring gaps (props that couldn't drive layout automatically)
+- Approximations (values that were fixed rather than variable-bound)
+
+### Rationale
+- The agent is a compiler, not a creative tool. Compilers have warnings. Designers using the output need to know what was approximated or skipped — not discover it after shipping
+- The frame creates an audit trail for improving skills and contracts over time
+- Flagging limitations explicitly (rather than silently overriding them) preserves human authority over design decisions
+
+### Consequences
+- Every component generation includes a canvas annotations phase (Phase 6 in `cc-figma-component`)
+- Notes are informational only — they don't block generation or use
+- When a limitation is resolved (by a skill update, contract fix, or Figma API improvement), the corresponding note should be removed in the next generation run
