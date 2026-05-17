@@ -1,0 +1,36 @@
+{
+  "accordion": {
+    "fill": {
+      "item":          { "$value": "{neutral.0}",  "$type": "color", "$description": "Item background" },
+      "item-hover":    { "$value": "{neutral.50}", "$type": "color" },
+      "item-expanded": { "$value": "{neutral.50}", "$type": "color" }
+    },
+    "text": {
+      "trigger": { "$value": "{text.primary}",   "$type": "color" },
+      "content": { "$value": "{text.secondary}", "$type": "color" },
+      "icon":    { "$value": "{neutral.500}",    "$type": "color" }
+    },
+    "border": {
+      "item":  { "$value": "{border.default}", "$type": "color" },
+      "focus": { "$value": "{focus.default}",  "$type": "color" }
+    },
+    "focus": {
+      "ring": { "$value": "{focus.default}", "$type": "color" }
+    },
+    "spacing": {
+      "item-gap":           { "$value": "{space.xs}", "$type": "dimension" },
+      "item-padding-x":     { "$value": "{space.md}", "$type": "dimension" },
+      "item-padding-y":     { "$value": "{space.sm}", "$type": "dimension" },
+      "content-padding-top":{ "$value": "{space.xs}", "$type": "dimension" },
+      "group-gap":          { "$value": "{space.sm}", "$type": "dimension" }
+    },
+    "typography": {
+      "trigger-size":   { "$value": "{textSize.md}",    "$type": "dimension" },
+      "trigger-weight": { "$value": "{weight.medium}",  "$type": "fontWeight" },
+      "content-size":   { "$value": "{textSize.sm}",    "$type": "dimension" }
+    },
+    "border-radius": { "$value": "{radius.md}",       "$type": "dimension" },
+    "border-width":  { "$value": "{border.width.sm}", "$type": "dimension" },
+    "expand-duration":{ "$value": "{duration.normal}", "$type": "duration" }
+  }
+}
