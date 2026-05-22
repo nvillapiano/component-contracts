@@ -15,6 +15,8 @@
       "background.primary": "brand.500",
       "background.primary.hover": "brand.600",
       "background.primary.active": "brand.700",
+      "background.secondary": "button.fill.secondary",
+      "background.ghost": "button.fill.ghost",
       "background.destructive": "feedback.error.default",
       "background.destructive.hover": "error.600",
       "text.primary": "neutral.0",

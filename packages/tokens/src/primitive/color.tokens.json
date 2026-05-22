@@ -39,6 +39,7 @@
       "500": { "$value": "#22c55e", "$type": "color" },
       "600": { "$value": "#16a34a", "$type": "color" },
       "700": { "$value": "#15803d", "$type": "color" }
-    }
+    },
+    "transparent": { "$value": "transparent", "$type": "color" }
   }
 }

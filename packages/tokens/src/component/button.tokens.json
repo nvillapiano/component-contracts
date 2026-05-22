@@ -6,6 +6,8 @@
       "brand-active": { "$value": "{brand.700}",      "$type": "color" },
       "danger":       { "$value": "{error.500}",      "$type": "color", "$description": "Destructive button background" },
       "danger-hover": { "$value": "{error.600}",      "$type": "color" },
+      "secondary":    { "$value": "{color.transparent}", "$type": "color", "$description": "Secondary button resting background" },
+      "ghost":        { "$value": "{color.transparent}", "$type": "color", "$description": "Ghost button resting background" },
       "surface":      { "$value": "{surface.subtle}", "$type": "color", "$description": "Hover fill for secondary/ghost" },
       "muted":        { "$value": "{surface.muted}",  "$type": "color", "$description": "Active fill for secondary/ghost" }
     },
