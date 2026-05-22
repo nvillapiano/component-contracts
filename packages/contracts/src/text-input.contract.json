@@ -21,11 +21,11 @@
       "focus.ring": "focus.default"
     },
     "typography": {
-      "input.size": "text.md",
+      "input.size": "textSize.md",
       "input.weight": "weight.regular",
-      "label.size": "text.sm",
+      "label.size": "textSize.sm",
       "label.weight": "weight.medium",
-      "helper.size": "text.xs"
+      "helper.size": "textSize.xs"
     },
     "spacing": {
       "padding.x": "space.md",
@@ -35,7 +35,7 @@
     },
     "border": {
       "radius": "radius.md",
-      "width": "border.sm"
+      "width": "border.width.sm"
     },
     "motion": {
       "transition": "duration.fast"

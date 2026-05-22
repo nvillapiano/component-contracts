@@ -15,8 +15,6 @@
       "background.primary": "brand.500",
       "background.primary.hover": "brand.600",
       "background.primary.active": "brand.700",
-      "background.secondary": "transparent",
-      "background.ghost": "transparent",
       "background.destructive": "feedback.error.default",
       "background.destructive.hover": "error.600",
       "text.primary": "neutral.0",
