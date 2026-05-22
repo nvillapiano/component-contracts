@@ -1,0 +1,131 @@
+name: AI review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+jobs:
+  review:
+    name: Senior engineer review
+    runs-on: ubuntu-latest
+    if: "!github.event.pull_request.draft"
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr diff ${{ github.event.pull_request.number }} > pr.diff
+          echo "Diff size: $(wc -c < pr.diff) bytes"
+
+      - name: Run AI review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          python3 << 'EOF'
+          import json, os, urllib.request, urllib.error, sys
+
+          diff = open("pr.diff").read()
+          # Truncate very large diffs to avoid token limits
+          if len(diff) > 20000:
+              diff = diff[:20000] + "\n\n... [diff truncated at 20k chars]"
+
+          pr_title = os.environ.get("PR_TITLE", "")
+          pr_body  = os.environ.get("PR_BODY", "")
+          pr_author = os.environ.get("PR_AUTHOR", "")
+
+          system = """You are a senior design systems engineer reviewing a pull request for "Component Contracts" — a contract-driven design system where JSON contracts are the single source of truth and Figma, React, Web Components, iOS, and Android are derived build targets.
+
+          ARCHITECTURE YOU ARE ENFORCING:
+
+          Token system (3 tiers, strict):
+          - Tier 1 Primitives: packages/tokens/src/primitive/*.tokens.json — raw values ONLY. No aliases.
+          - Tier 2 Semantic: packages/tokens/src/semantic/semantic.tokens.json — aliases into Tier 1 only.
+          - Tier 3 Component: packages/tokens/src/component/{id}.tokens.json — aliases into Tier 2 (or Tier 1 for structural tokens like radius/spacing). Components in CSS/Figma/native consume ONLY Tier 3.
+          - No magic values (raw hex, px, CSS keywords like transparent) anywhere except Tier 1. If a raw value appears in Tier 2 or Tier 3, that is a bug.
+
+          Contract rules:
+          - Every token path in a contract's tokens block must resolve in packages/tokens/dist/json/tokens.json.
+          - Contracts should reference Tier 3 token names where they exist, not Tier 1/2 paths directly.
+          - Adding a component requires all four: contract + component token file + CSS implementation + Figma styles. Partial updates are a red flag.
+          - Contract status field must be accurate. Draft = not ready for implementation. Stable = fully implemented and tested.
+          - Schema changes (packages/schema/schema.json) require a types:generate run.
+
+          Key ADRs to enforce:
+          - ADR-014: Font loading belongs in app entry points, never in @ds/tokens.
+          - ADR-018: Tier 3 tokens are stored files (packages/tokens/src/component/), never inline in contracts.
+          - ADR-010: Conditional prop logic (e.g. collapsible only valid when type=single) lives in prop descriptions, not JSON Schema.
+          - ADR-012: Separate Storybook instances per web target — never merge them.
+
+          Naming conventions:
+          - Token files use kebab-case for multi-word keys.
+          - Contract IDs are kebab-case and match their filename.
+          - Storybook stories mirror contract variants 1:1.
+
+          OUTPUT FORMAT:
+          Start with a one-line verdict on its own line:
+          ✅ LGTM  |  ✅ LGTM with notes  |  ⚠️ Needs changes  |  ❌ Blocking issues
+
+          Then:
+          **Issues** (if any): numbered list, each with file path and specific problem
+          **Highlights**: 1–3 bullets on what was done well (skip if nothing notable)
+          **Suggestions**: 1–2 optional improvements (not blockers)
+
+          Be direct. Skip filler phrases. If there are no issues say so in one sentence. Max 400 words."""
+
+          user_content = f"""PR #{os.environ.get('GITHUB_REF', '').split('/')[-2] if 'pull' in os.environ.get('GITHUB_REF', '') else '?'} by {pr_author}
+          Title: {pr_title}
+
+          Description:
+          {pr_body or "(no description)"}
+
+          Diff:
+          {diff}"""
+
+          payload = {
+              "model": "claude-opus-4-5",
+              "max_tokens": 1024,
+              "system": system,
+              "messages": [{"role": "user", "content": user_content}]
+          }
+
+          req = urllib.request.Request(
+              "https://api.anthropic.com/v1/messages",
+              data=json.dumps(payload).encode(),
+              headers={
+                  "x-api-key": os.environ["ANTHROPIC_API_KEY"],
+                  "anthropic-version": "2023-06-01",
+                  "content-type": "application/json"
+              }
+          )
+
+          try:
+              resp = json.loads(urllib.request.urlopen(req).read())
+              review = resp["content"][0]["text"]
+          except urllib.error.HTTPError as e:
+              print(f"API error {e.code}: {e.read().decode()}", file=sys.stderr)
+              sys.exit(1)
+
+          with open("review.md", "w") as f:
+              f.write("## 🤖 AI Review\n\n")
+              f.write(review)
+              f.write("\n\n---\n*claude-opus-4-5 · [component-contracts reviewer](/.github/workflows/review.yml)*")
+
+          print(review)
+          EOF
+
+      - name: Post review comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body "$(cat review.md)"
