@@ -34,11 +34,11 @@
       "helper.gap": "space.xs"
     },
     "border": {
-      "radius": "radius.md",
-      "width": "border.width.sm"
+      "radius": "6px",
+      "width": "1px"
     },
     "motion": {
-      "transition": "duration.fast"
+      "transition": "100ms"
     }
   },
   "props": {

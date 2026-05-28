@@ -81,5 +81,11 @@
   "error": {
     "500": { "$value": "{color.red.500}", "$type": "color" },
     "600": { "$value": "{color.red.600}", "$type": "color" }
+  },
+  "button": {
+    "fill": {
+      "secondary": { "$value": "{color.neutral.100}", "$type": "color" },
+      "ghost":     { "$value": "{color.neutral.0}",   "$type": "color" }
+    }
   }
 }
