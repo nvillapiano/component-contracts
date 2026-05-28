@@ -14,6 +14,7 @@
     "full-reset:web": "pnpm --filter @ds/schema build && pnpm --filter @ds/contracts build && pnpm tokens:build && pnpm reset:web",
     "dev:tokens": "pnpm --filter @ds/tokens dev",
     "validate": "pnpm --filter @ds/validator start",
+    "validate:tokens": "bash scripts/validate-component-tokens.sh",
     "types:generate": "pnpm --filter @ds/schema generate",
     "tokens:build": "pnpm --filter @ds/tokens build",
     "test": "pnpm --filter @ds/web test",

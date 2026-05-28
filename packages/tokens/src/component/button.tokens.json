@@ -1,9 +1,9 @@
 {
   "button": {
     "fill": {
-      "brand":        { "$value": "{brand.500}",      "$type": "color", "$description": "Primary button background" },
-      "brand-hover":  { "$value": "{brand.600}",      "$type": "color" },
-      "brand-active": { "$value": "{brand.700}",      "$type": "color" },
+      "brand":        { "$value": "{brand.600}",      "$type": "color", "$description": "Primary button background (WCAG AA contrast with white text)" },
+      "brand-hover":  { "$value": "{brand.700}",      "$type": "color" },
+      "brand-active": { "$value": "{brand.800}",      "$type": "color" },
       "danger":       { "$value": "{error.500}",      "$type": "color", "$description": "Destructive button background" },
       "danger-hover": { "$value": "{error.600}",      "$type": "color" },
       "secondary":    { "$value": "{color.transparent}", "$type": "color", "$description": "Secondary button resting background" },
