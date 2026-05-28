@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "component-contracts": {
+      "command": "/Users/nico/Sites/component-contracts/node_modules/.pnpm/node_modules/.bin/tsx",
+      "args": ["/Users/nico/Sites/component-contracts/packages/mcp-server/src/server.ts"],
+      "env": {
+        "CONTRACTS_DIR": "/Users/nico/Sites/component-contracts/packages/contracts/src",
+        "COMPONENT_CONTRACTS_ROOT": "/Users/nico/Sites/component-contracts"
+      }
+    }
+  }
+}
