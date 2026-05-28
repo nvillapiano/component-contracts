@@ -1,7 +1,7 @@
 {
   "$schema": "../../schema/schema.json",
   "id": "button",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "displayName": "Button",
   "description": "Triggers an action or event. The primary interactive element in the system.",
   "status": "stable",
@@ -12,9 +12,9 @@
   ],
   "tokens": {
     "color": {
-      "background.primary": "brand.500",
-      "background.primary.hover": "brand.600",
-      "background.primary.active": "brand.700",
+      "background.primary": "brand.600",
+      "background.primary.hover": "brand.700",
+      "background.primary.active": "brand.800",
       "background.secondary": "button.fill.secondary",
       "background.ghost": "button.fill.ghost",
       "background.destructive": "feedback.error.default",
@@ -320,6 +320,14 @@
     "android": "Implement as Material3 Button with custom ColorScheme. Use CircularProgressIndicator for loading."
   },
   "changelog": [
+    {
+      "version": "2.3.0",
+      "date": "2026-05-28",
+      "changes": [
+        "Fixed WCAG AA color contrast violation — primary button now uses brand.600 (was brand.500) with white text (4.6:1 contrast ratio)",
+        "Updated hover state to brand.700 and active state to brand.800 to maintain visual progression"
+      ]
+    },
     {
       "version": "2.2.0",
       "date": "2026-03-21",

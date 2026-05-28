@@ -2,7 +2,8 @@
   "brand": {
     "500": { "$value": "{color.blue.500}", "$type": "color" },
     "600": { "$value": "{color.blue.600}", "$type": "color" },
-    "700": { "$value": "{color.blue.700}", "$type": "color" }
+    "700": { "$value": "{color.blue.700}", "$type": "color" },
+    "800": { "$value": "{color.blue.800}", "$type": "color" }
   },
   "text": {
     "primary":     { "$value": "{color.neutral.900}", "$type": "color" },
