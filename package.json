@@ -15,6 +15,7 @@
     "dev:tokens": "pnpm --filter @ds/tokens dev",
     "validate": "pnpm --filter @ds/validator start",
     "validate:tokens": "bash scripts/validate-component-tokens.sh",
+    "export-figma-references": "tsx scripts/export-figma-references.ts",
     "types:generate": "pnpm --filter @ds/schema generate",
     "tokens:build": "pnpm --filter @ds/tokens build",
     "test": "pnpm --filter @ds/web test",

@@ -10,6 +10,7 @@ import { expect, within, userEvent } from "@storybook/test";
 import { Button } from "./button";
 import { button as buttonContract } from "@ds/contracts";
 import { ContractTokenTable } from "../../docs/ContractTokenTable";
+import { FigmaReference } from "../../docs/FigmaReference";
 
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 // Contract metadata drives the docs page — description, do/dont, related components
@@ -45,6 +46,11 @@ const meta = {
           <Controls />
           <Stories />
           <ContractTokenTable tokens={buttonContract.tokens} />
+          <FigmaReference
+            componentName="Button"
+            figmaUrl="https://www.figma.com/design/sV4av2QFgdOcJqKnkx4w4X?node-id=..."
+            imageUrl="/figma-references/button-primary.png"
+          />
         </>
       ),
     },
