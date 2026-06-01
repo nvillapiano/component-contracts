@@ -109,8 +109,12 @@ for (const file of files) {
     const contract = data as { tokens?: unknown };
     if (contract.tokens) {
       for (const { category, ref } of collectTokenRefs(contract.tokens)) {
-        if (!tokenPathExists(builtTokens, ref)) {
-          tokenErrors.push(`  tokens  [${category}] "${ref}" not found in @ds/tokens`);
+        // Only validate token references (contain dots like "brand.500")
+        // Skip literal CSS values (e.g., "6px", "100ms", "ease-out")
+        if (ref.includes(".")) {
+          if (!tokenPathExists(builtTokens, ref)) {
+            tokenErrors.push(`  tokens  [${category}] "${ref}" not found in @ds/tokens`);
+          }
         }
       }
     }
