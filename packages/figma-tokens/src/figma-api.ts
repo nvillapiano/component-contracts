@@ -215,4 +215,98 @@ export class FigmaClient {
       },
     });
   }
+
+  /**
+   * Create a page in the file
+   */
+  async createPage(name: string): Promise<string> {
+    const data = await this.request<{ pageId: string }>(
+      'POST',
+      `/files/${this.fileKey}/pages`,
+      { name }
+    );
+    return data.pageId;
+  }
+
+  /**
+   * Create a frame (component container)
+   */
+  async createFrame(
+    pageId: string,
+    name: string,
+    width: number,
+    height: number,
+    x?: number,
+    y?: number
+  ): Promise<string> {
+    const data = await this.request<{ nodeId: string }>(
+      'POST',
+      `/files/${this.fileKey}/pages/${pageId}/frames`,
+      {
+        name,
+        width,
+        height,
+        x: x ?? 0,
+        y: y ?? 0,
+      }
+    );
+    return data.nodeId;
+  }
+
+  /**
+   * Create a component from a frame
+   */
+  async createComponent(frameId: string, name: string): Promise<string> {
+    const data = await this.request<{ componentId: string }>(
+      'POST',
+      `/files/${this.fileKey}/components`,
+      {
+        nodeId: frameId,
+        name,
+      }
+    );
+    return data.componentId;
+  }
+
+  /**
+   * Create component variant
+   */
+  async createComponentVariant(
+    componentId: string,
+    variantProperties: Record<string, string>
+  ): Promise<string> {
+    const data = await this.request<{ variantId: string }>(
+      'POST',
+      `/files/${this.fileKey}/components/${componentId}/variants`,
+      { properties: variantProperties }
+    );
+    return data.variantId;
+  }
+
+  /**
+   * Add text to a node
+   */
+  async addTextToNode(nodeId: string, content: string): Promise<void> {
+    await this.request('POST', `/files/${this.fileKey}/nodes/${nodeId}/text`, {
+      content,
+    });
+  }
+
+  /**
+   * Set component property
+   */
+  async setComponentProperty(
+    componentId: string,
+    propertyName: string,
+    propertyType: 'TEXT' | 'BOOLEAN' | 'INSTANCE_SWAP'
+  ): Promise<void> {
+    await this.request(
+      'POST',
+      `/files/${this.fileKey}/components/${componentId}/properties`,
+      {
+        name: propertyName,
+        type: propertyType,
+      }
+    );
+  }
 }
