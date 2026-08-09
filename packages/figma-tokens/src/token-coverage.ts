@@ -102,7 +102,8 @@ function loadAllContracts(contractsDir: string): ComponentContract[] {
 
 /**
  * Extract all semantic token references from a contract
- * Only includes token references, not literal CSS values (e.g., "6px", "200ms")
+ * All contract token values must be token references (contain dots like "brand.500")
+ * Literal CSS values are not permitted
  */
 function extractTokenReferences(contract: ComponentContract): string[] {
   const tokens = new Set<string>();
@@ -115,13 +116,8 @@ function extractTokenReferences(contract: ComponentContract): string[] {
   for (const values of Object.values(contract.tokens)) {
     for (const value of Object.values(values)) {
       const strValue = String(value);
-
-      // Skip literal CSS values (they don't contain dots/are not token paths)
-      // Include only values that look like semantic token references (contain dots)
-      if (strValue.includes('.')) {
-        const tokenPath = strValue.replace(/\./g, '/');
-        tokens.add(tokenPath);
-      }
+      const tokenPath = strValue.replace(/\./g, '/');
+      tokens.add(tokenPath);
     }
   }
 

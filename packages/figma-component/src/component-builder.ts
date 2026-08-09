@@ -1,5 +1,5 @@
 import { FigmaComponentBuilderConfig, ComponentBuildResult, ValidationResult, Tier3Token } from './types.js';
-import { loadConfig, mergeConfig, type Config, loadTokenFiles, getSemanticTokens, FigmaClient } from '../../figma-tokens/dist/index.js';
+import { loadConfig, mergeConfig, type Config, loadTokenFiles, getSemanticTokens, getPrimitiveTokens, FigmaClient } from '../../figma-tokens/dist/index.js';
 import { loadContract, validateContract, getContractTokenPaths } from './contract-loader.js';
 import { deriveTier3Tokens, getMissingSemanticVariables, buildVariantMatrix } from './tier3-tokens.js';
 import type { ComponentContract } from '@ds/schema';
@@ -69,11 +69,13 @@ export class FigmaComponentBuilder {
         };
       }
 
-      // Check for missing semantic variables
+      // Check for missing semantic variables (checks both Tier 1 primitives and Tier 2 semantic)
       this.onProgress('validate', 'Loading semantic tokens...');
-      const { semantic } = loadTokenFiles(this.tokensDir);
+      const { semantic, primitives } = loadTokenFiles(this.tokensDir);
       const semanticFlat = getSemanticTokens(semantic);
-      const availableVariables = new Set<string>(semanticFlat.map((t: any) => t.path as string));
+      // Include both semantic AND primitive tokens as valid references
+      const allTokens = [...semanticFlat, ...getPrimitiveTokens(primitives)];
+      const availableVariables = new Set<string>(allTokens.map((t: any) => t.path as string));
 
       const tier3Tokens = deriveTier3Tokens(contract);
       const missingVariables = getMissingSemanticVariables(tier3Tokens, availableVariables);
@@ -200,11 +202,13 @@ export class FigmaComponentBuilder {
     }
 
     this.onProgress('0', 'Loading semantic tokens...');
-    const { semantic } = loadTokenFiles(this.tokensDir);
+    const { semantic, primitives } = loadTokenFiles(this.tokensDir);
     const semanticFlat = getSemanticTokens(semantic);
+    // Include both semantic AND primitive tokens as valid references
+    const allTokens = [...semanticFlat, ...getPrimitiveTokens(primitives)];
+    const availableVariables = new Set<string>(allTokens.map((t: any) => t.path as string));
 
     const tier3Tokens = deriveTier3Tokens(contract);
-    const availableVariables = new Set<string>(semanticFlat.map((t: any) => t.path as string));
     const missing = getMissingSemanticVariables(tier3Tokens, availableVariables);
 
     if (missing.length > 0) {

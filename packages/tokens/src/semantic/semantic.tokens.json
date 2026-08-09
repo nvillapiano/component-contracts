@@ -84,8 +84,8 @@
   },
   "button": {
     "fill": {
-      "secondary": { "$value": "{color.neutral.100}", "$type": "color" },
-      "ghost":     { "$value": "{color.transparent}", "$type": "color" }
+      "secondary": { "$value": "{color.neutral.100}", "$type": "color", "$description": "Secondary button background" },
+      "ghost":     { "$value": "{color.transparent}", "$type": "color", "$description": "Ghost button background (transparent)" }
     }
   }
 }
