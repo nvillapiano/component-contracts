@@ -1,5 +1,6 @@
 node_modules
 dist
+storybook-static
 *.js.map
 *.d.ts.map
 .DS_Store
