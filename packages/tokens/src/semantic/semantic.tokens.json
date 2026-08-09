@@ -85,7 +85,7 @@
   "button": {
     "fill": {
       "secondary": { "$value": "{color.neutral.100}", "$type": "color" },
-      "ghost":     { "$value": "{color.neutral.0}",   "$type": "color" }
+      "ghost":     { "$value": "{color.transparent}", "$type": "color" }
     }
   }
 }

@@ -35,12 +35,12 @@
       "group.gap": "space.sm"
     },
     "border": {
-      "radius.item": "6px",
-      "width.item": "1px"
+      "radius.item": "radius.md",
+      "width.item": "border.width.sm"
     },
     "motion": {
-      "expand.duration": "200ms",
-      "expand.easing": "ease-out"
+      "expand.duration": "duration.normal",
+      "expand.easing": "easing.ease-out"
     }
   },
   "props": {

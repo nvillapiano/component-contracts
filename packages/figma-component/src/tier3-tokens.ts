@@ -116,8 +116,6 @@ function deriveQualifier(semanticAlias: string): string {
 
 /**
  * Get missing semantic variables
- * Only validates token references (containing dots like "brand.500")
- * Skips literal CSS values (like "6px", "100ms", "ease-out")
  */
 export function getMissingSemanticVariables(
   tokens: Tier3Token[],
@@ -126,13 +124,9 @@ export function getMissingSemanticVariables(
   const missing: string[] = [];
 
   for (const token of tokens) {
-    // Only validate token references (contain dots)
-    // Skip literal CSS values
-    if (token.semanticAlias.includes('.')) {
-      const varName = token.semanticAlias.replace(/\./g, '/');
-      if (!availableVariables.has(varName)) {
-        missing.push(`${token.contractPath} → ${varName}`);
-      }
+    const varName = token.semanticAlias.replace(/\./g, '/');
+    if (!availableVariables.has(varName)) {
+      missing.push(`${token.contractPath} → ${varName}`);
     }
   }
 
