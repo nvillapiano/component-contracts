@@ -126,9 +126,9 @@ export class FigmaTokenBuilder {
       `Loaded ${primitiveFlat.length} primitive tokens and ${semanticFlat.length} semantic tokens`
     );
 
-    // Check token coverage
+    // Check token coverage (including primitives as valid references)
     this.onProgress('0', 'Validating token coverage...');
-    const coverage = validateTokenCoverage(this.contractsDir, semanticFlat);
+    const coverage = validateTokenCoverage(this.contractsDir, semanticFlat, primitiveFlat);
 
     if (!coverage.isComplete) {
       this.onProgress('0', `⚠️  Token coverage: ${coverage.coveragePercent}% (${coverage.missing.length} missing)`);

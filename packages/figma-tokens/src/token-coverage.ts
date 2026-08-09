@@ -22,11 +22,14 @@ export interface CoverageReport {
  */
 export function validateTokenCoverage(
   contractsDir: string,
-  semanticTokens: FlatToken[]
+  semanticTokens: FlatToken[],
+  primitiveTokens: FlatToken[] = []
 ): CoverageReport {
   // Load all contracts
   const contracts = loadAllContracts(contractsDir);
-  const availableTokens = new Set(semanticTokens.map((t) => t.path));
+  // Include both semantic AND primitive tokens as valid references
+  const allTokens = [...semanticTokens, ...primitiveTokens];
+  const availableTokens = new Set(allTokens.map((t) => t.path));
 
   // Extract all semantic token references from contracts
   const tokenReferences = new Map<string, string[]>();
