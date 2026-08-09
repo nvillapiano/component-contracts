@@ -65,17 +65,17 @@ const styles = `
 
   /* Variants */
   button.variant-primary {
-    background-color: var(--ds-brand-500);
-    color: var(--ds-neutral-0);
-    border-color: var(--ds-brand-500);
-  }
-  button.variant-primary:hover:not(:disabled) {
     background-color: var(--ds-brand-600);
+    color: var(--ds-neutral-0);
     border-color: var(--ds-brand-600);
   }
-  button.variant-primary:active:not(:disabled) {
+  button.variant-primary:hover:not(:disabled) {
     background-color: var(--ds-brand-700);
     border-color: var(--ds-brand-700);
+  }
+  button.variant-primary:active:not(:disabled) {
+    background-color: var(--ds-brand-800);
+    border-color: var(--ds-brand-800);
   }
 
   button.variant-secondary {

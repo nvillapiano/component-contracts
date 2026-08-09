@@ -37,9 +37,7 @@
     }
   },
   "focus": {
-    "default":     { "$value": "{color.blue.500}",  "$type": "color" },
-    "ringWidth":   { "$value": "2px",               "$type": "dimension" },
-    "ringOffset":  { "$value": "2px",               "$type": "dimension" }
+    "default": { "$value": "{color.blue.500}", "$type": "color" }
   },
   "space": {
     "xs":  { "$value": "{space.1}",  "$type": "dimension" },

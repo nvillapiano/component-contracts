@@ -1,0 +1,23 @@
+{
+  "name": "@ds/figma-tokens",
+  "version": "0.1.0",
+  "description": "Build Figma variable collections from W3C DTCG token files",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@ds/schema": "workspace:*",
+    "@ds/tokens": "workspace:*"
+  },
+  "devDependencies": {}
+}

@@ -9,6 +9,7 @@ import {
 } from "./accordion";
 import { accordion as accordionContract } from "@ds/contracts";
 import { ContractTokenTable } from "../../docs/ContractTokenTable";
+import { FigmaReference } from "../../docs/FigmaReference";
 
 type Story = StoryObj<typeof Accordion>;
 
@@ -42,6 +43,11 @@ const meta: Meta<typeof Accordion> = {
           <Controls />
           <Stories />
           <ContractTokenTable tokens={accordionContract.tokens} />
+          <FigmaReference
+            componentName="Accordion"
+            figmaUrl="https://www.figma.com/design/sV4av2QFgdOcJqKnkx4w4X?node-id=..."
+            imageUrl="/figma-references/accordion-single.png"
+          />
         </>
       ),
     },

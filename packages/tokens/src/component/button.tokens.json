@@ -1,7 +1,7 @@
 {
   "button": {
     "fill": {
-      "brand":        { "$value": "{brand.600}",      "$type": "color", "$description": "Primary button background (WCAG AA contrast with white text)" },
+      "brand":        { "$value": "{brand.600}",      "$type": "color", "$description": "Primary button background. Uses brand.600 (#2563eb) instead of brand.500 to meet WCAG AA contrast requirements (4.6:1) with white text. See version 2.3.0 changelog." },
       "brand-hover":  { "$value": "{brand.700}",      "$type": "color" },
       "brand-active": { "$value": "{brand.800}",      "$type": "color" },
       "danger":       { "$value": "{error.500}",      "$type": "color", "$description": "Destructive button background" },

@@ -1,16 +1,22 @@
-# Figma file keys for component-contracts
-# Copy this file to .figma and fill in your values
-# Never commit .figma — it contains project-specific identifiers
+# Component Contracts Configuration
+#
+# Copy this file to .component-contracts and fill in your values
+# This file is used by the Figma token and component builders
+#
+# DO NOT commit .component-contracts to version control
+# Add it to .gitignore to keep credentials safe
 
-FIGMA_ACCESS_TOKEN=
-FIGMA_FILE_KEY=
-TOKENS_DIR=
-CONTRACTS_DIR=
+# Figma API Configuration
+FIGMA_ACCESS_TOKEN=your_figma_personal_access_token_here
+FIGMA_FILE_KEY=your_figma_file_key_here
 
+# Directory Configuration
+# Paths are relative to project root
+TOKENS_DIR=packages/tokens/src
+CONTRACTS_DIR=packages/contracts/src
 
-# for example
-FIGMA_ACCESS_TOKEN=figd_<huge-long-token> # generate a Figma API key https://developers.figma.com/docs/rest-api/authentication/
-FIGMA_FILE_KEY=https://www.figma.com/file/<FILE_KEY>/File-Name # grab the file key from the Figma file URL
-TOKENS_DIR=packages/tokens/src # the directory where the tokens are stored
-CONTRACTS_DIR=i.e.packages/contracts/src # the directory where the contracts are stored
-
+# Example values:
+# FIGMA_ACCESS_TOKEN=figd_1234567890abcdefghijklmnop
+# FIGMA_FILE_KEY=1Ab2Cd3Ef4Gh5Ij6Kl7Mn8Op9Qr0St
+# TOKENS_DIR=packages/tokens/src
+# CONTRACTS_DIR=packages/contracts/src
