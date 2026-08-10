@@ -210,8 +210,6 @@ The implementation uses three layers:
 
 ## See Also
 
-- [REFACTORING.md](../tmp/component-contracts-figma/REFACTORING.md) - Architecture overview
-- [CLAUDE_CODE_USAGE.md](../tmp/component-contracts-figma/CLAUDE_CODE_USAGE.md) - Detailed API reference
 - [Figma Skills Repository](https://github.com/nvillapiano/component-contracts-figma) - Original markdown skills
 
 ## Questions?

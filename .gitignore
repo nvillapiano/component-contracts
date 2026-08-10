@@ -9,4 +9,3 @@ storybook-static
 .cursor/mcp.json
 scripts/
 *.zip
-test-data/
