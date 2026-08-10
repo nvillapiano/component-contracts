@@ -113,13 +113,24 @@ function structuralDiff(
 function runCommand(
   command: string,
   args: string[],
-  cwd: string = PROJECT_ROOT
+  cwd: string = PROJECT_ROOT,
+  timeoutMs: number = 30000
 ): Promise<{ stdout: string; stderr: string; code: number }> {
   return new Promise((resolve) => {
     let stdout = "";
     let stderr = "";
+    let resolved = false;
 
     const proc = spawn(command, args, { cwd, stdio: ["pipe", "pipe", "pipe"] });
+
+    // Set timeout to prevent hung processes
+    const timeout = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        proc.kill();
+        resolve({ stdout, stderr: `Command timeout after ${timeoutMs}ms`, code: 1 });
+      }
+    }, timeoutMs);
 
     proc.stdout?.on("data", (data) => {
       stdout += data.toString();
@@ -130,11 +141,19 @@ function runCommand(
     });
 
     proc.on("close", (code) => {
-      resolve({ stdout, stderr, code: code ?? 1 });
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        resolve({ stdout, stderr, code: code ?? 1 });
+      }
     });
 
     proc.on("error", (err) => {
-      resolve({ stdout, stderr: err.message, code: 1 });
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        resolve({ stdout, stderr: err.message, code: 1 });
+      }
     });
   });
 }
