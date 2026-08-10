@@ -1,67 +1,114 @@
 ---
 name: cc-figma-tokens
-description: "Build or update Figma variable collections (Primitives and Semantic) from component-contracts token files. Use when the user wants to sync their design token definitions into Figma as native variables — e.g. 'build the token library', 'sync tokens to Figma', 'create Figma variables from tokens', 'update the variable collections'. PREREQUISITE for cc-figma-component — tokens must exist in Figma before components can be built."
+description: Create Figma variable collections from W3C Design Token Community Group token files. Upload primitive and semantic token files, then use /cc-figma-tokens to build Primitives and Semantic variable collections in Figma.
 ---
 
-# cc-figma-tokens — Component Contracts Token Skill
+# cc-figma-tokens — Build Design Tokens in Figma
 
-Build Figma variable collections from component-contracts token files.
+Create Figma variable collections (Primitives and Semantic) from W3C DTCG token files. This skill reads your design token definitions and materializes them as native Figma variables with proper modes, types, and aliases.
 
-## Workflow
+## What this skill does
 
-1. **Configuration**: Read `.component-contracts` from the project root
-   - Verify `FIGMA_ACCESS_TOKEN`, `FIGMA_FILE_KEY`, `TOKENS_DIR`, `CONTRACTS_DIR` are set
-   - If missing, tell user to copy `.component-contracts.example` and fill in values
-   - **Never output `FIGMA_ACCESS_TOKEN` in any response**
+- Reads primitive token files (color, space, motion, shape, typography)
+- Reads semantic token file (role-based aliases to primitives)
+- Creates two Figma variable collections: **Primitives** and **Semantic**
+- Binds all tokens to the correct variable types (COLOR, FLOAT, STRING)
+- Creates variable aliases (semantic tokens → primitive tokens)
+- Reports what was created and any issues
 
-2. **Inspect**: Check what token files exist
-   - List all primitive token files (color, motion, shape, space, typography)
-   - List semantic token file
-   - Show token counts per tier
-   - **Await user approval before proceeding**
+## How to use
 
-3. **Build**: Run the token builder
-   ```bash
-   pnpm run build:figma-tokens
+1. **Prepare your token files**
+   - Collect `primitives/color.tokens.json`, `primitives/space.tokens.json`, etc.
+   - Collect `semantic/semantic.tokens.json`
+   - Export as files or prepare to paste the JSON
+
+2. **Upload the files to this chat**
+   - You can upload individual files or a directory
+   - Must include at least one primitive file and the semantic file
+
+3. **Run the skill**
    ```
-   - This creates/updates Primitives and Semantic variable collections in Figma
-   - Phases handled by the builder:
-     - Phase 0: Load and validate tokens
-     - Phase 1: Create Primitives collection with all raw token values
-     - Phase 2: Create Semantic collection with aliases into Primitives
-     - Phase 3: Apply explicit variable modes to all nodes
-     - Phase 4: Validate both collections exist with correct counts
+   /cc-figma-tokens
+   ```
 
-4. **Verify**: After successful build
-   - Token coverage is displayed (percentage of tokens used by contracts)
-   - Both Primitives and Semantic collections should exist in the Figma file
-   - All tokens are available for component binding
+4. **Approve the plan**
+   - The skill will show you what collections and tokens will be created
+   - Confirm whether to create new collections, update existing ones, or skip
 
-## What Gets Created
+5. **Verify the results**
+   - The skill reports how many variables were created per collection
+   - Open the Variables panel in Figma to inspect the collections
 
-| Collection | Mode | Purpose |
-|-----------|------|---------|
-| `Primitives` | `Value` | Raw token values (color/blue/500, space/4, etc.) — hidden from property panels |
-| `Semantic` | `Value` | Aliases into Primitives (brand/500, surface/default, etc.) — components bind to these |
+## Token file format
 
-Variable names use `/` as group separator matching W3C DTCG format:
-- Primitives: `color/blue/500`, `space/4`, `radius/md`
-- Semantic: `brand/500`, `surface/default`, `text/primary`
+Tokens must follow W3C Design Token Community Group format:
 
-## Token Architecture (Tiers)
+```json
+{
+  "color": {
+    "blue": {
+      "500": {
+        "$value": "#2563eb",
+        "$type": "color"
+      }
+    }
+  },
+  "space": {
+    "md": {
+      "$value": 16,
+      "$type": "dimension"
+    }
+  }
+}
+```
 
-**Tier 1 — Primitives** (raw values)
-- Color scales (color/red/50, color/red/100, etc.)
-- Spacing scale (space/1, space/2, space/4, etc.)
-- Motion (duration, easing)
-- Shape (radius values)
-- Typography (font sizes, weights)
+Supported `$type` values:
+- `color` → Figma COLOR variable
+- `dimension` → Figma FLOAT variable
+- `fontFamily` → Figma STRING variable
+- `fontSize` → Figma FLOAT variable
+- `fontWeight` → Figma STRING variable
+- `duration` → Figma FLOAT variable (milliseconds)
+- `cubicBezier` → Figma STRING variable
 
-**Tier 2 — Semantic** (aliases)
-- Design roles (brand/500, surface/default, text/primary)
-- Component-independent (used across all components)
-- Single `Value` mode
+Semantic tokens can reference primitives using `{path.notation}`:
 
-## Next Step
+```json
+{
+  "brand": {
+    "500": {
+      "$value": "{color.blue.500}",
+      "$type": "color"
+    }
+  }
+}
+```
 
-After building tokens, use **cc-figma-component** skill to generate Figma components that bind to these variables.
+## Important notes
+
+- **Collection naming**: Collections are named `Primitives` (for all primitive tokens) and `Semantic` (for role-based aliases)
+- **Existing collections**: If collections already exist, you'll be asked whether to skip, update, or recreate them
+- **Variable limits**: If you have more than 80 tokens in a single collection, the skill will create them in batches automatically
+- **Fonts**: Custom fonts may not be available in Figma's environment. Common fonts (Inter, Roboto, etc.) work reliably
+- **No undo**: All changes from a single skill run undo as one block. Run the skill carefully if your file already has variables
+
+## Troubleshooting
+
+**"Collection already exists"**
+→ Choose to update (adds new tokens, keeps existing ones) or recreate (deletes and rebuilds)
+
+**"Variable type not supported"**
+→ Check the `$type` field. Only the types listed above are supported
+
+**"Token reference not found"**
+→ Semantic tokens reference primitives by path (e.g., `{color.blue.500}`). Make sure the primitive exists before creating the semantic token
+
+**"Script timed out"**
+→ The file has too many tokens. The skill will split creation into batches automatically
+
+## After tokens are created
+
+- Use **cc-figma-components** skill to build components that reference these variables
+- Tokens are now available to bind to component properties
+- Changes to token values automatically propagate to all components using them
