@@ -27,6 +27,7 @@ Use `pnpm kill:web` to stop stale Storybook instances on port 6006.
 | `packages/mcp-server` | MCP server for Cursor / Claude Desktop |
 | `apps/validator` | CI: validates contracts against schema |
 | `apps/web` | React component library (Vite + Storybook) |
+| `skills/` | [Figma Agent](./skills/) skills for Figma Community — `cc-figma-tokens`, `cc-figma-components` |
 | `docs/` | [Architecture](./docs/architecture.md), [Decisions](./docs/decisions.md) |
 
 ---
@@ -67,6 +68,21 @@ Configure MCP with the repo's `.cursor/mcp.json`. In Cursor: Settings → Featur
 | `diff_contract` | Changelog between versions |
 | `find_by_token` | Which components use a token |
 | `get_platform_context` | Contract filtered for web / ios / android |
+
+---
+
+## Figma Agent skills
+
+[Figma Agent](https://www.figma.com/developers/ai-agents) integration via community-published skills:
+
+| Skill | Description |
+|-------|-------------|
+| `cc-figma-tokens` | Upload W3C DTCG token files → creates Figma variable collections (Primitives + Semantic) with proper type mapping and aliases |
+| `cc-figma-components` | Upload component contract → builds component set with all variants bound to semantic tokens |
+
+**To use:** Install skills from [Figma Community](https://www.figma.com/community) (published as `onenorth-cc-figma-tokens` and `onenorth-cc-figma-components`), then upload token or contract JSON files to Figma Agent.
+
+See [skills/](./skills/) for documentation and implementation.
 
 ---
 

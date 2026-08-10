@@ -13,6 +13,7 @@ import { z } from "zod";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { spawn } from "child_process";
 import type { ComponentContract } from "@ds/schema";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -105,6 +106,89 @@ function structuralDiff(
     }
   }
   return changes;
+}
+
+// ─── CLI Execution ───────────────────────────────────────────────────────────
+
+function runCommand(
+  command: string,
+  args: string[],
+  cwd: string = PROJECT_ROOT,
+  timeoutMs: number = 30000
+): Promise<{ stdout: string; stderr: string; code: number }> {
+  return new Promise((resolve) => {
+    let stdout = "";
+    let stderr = "";
+    let resolved = false;
+
+    const proc = spawn(command, args, { cwd, stdio: ["pipe", "pipe", "pipe"] });
+
+    // Set timeout to prevent hung processes
+    const timeout = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        proc.kill();
+        resolve({ stdout, stderr: `Command timeout after ${timeoutMs}ms`, code: 1 });
+      }
+    }, timeoutMs);
+
+    proc.stdout?.on("data", (data) => {
+      stdout += data.toString();
+    });
+
+    proc.stderr?.on("data", (data) => {
+      stderr += data.toString();
+    });
+
+    proc.on("close", (code) => {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        resolve({ stdout, stderr, code: code ?? 1 });
+      }
+    });
+
+    proc.on("error", (err) => {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        resolve({ stdout, stderr: err.message, code: 1 });
+      }
+    });
+  });
+}
+
+// ─── Token File Reading ──────────────────────────────────────────────────────
+
+function readTokenFile(tier: "primitive" | "semantic" | "component", name: string): Record<string, unknown> | null {
+  const tokensDir = path.join(PROJECT_ROOT, "packages/tokens/src");
+  let filePath: string;
+
+  if (tier === "component") {
+    filePath = path.join(tokensDir, "component", `${name}.tokens.json`);
+  } else {
+    filePath = path.join(tokensDir, tier, `${name}.tokens.json`);
+  }
+
+  if (!fs.existsSync(filePath)) return null;
+
+  try {
+    return JSON.parse(fs.readFileSync(filePath, "utf-8")) as Record<string, unknown>;
+  } catch {
+    return null;
+  }
+}
+
+function listTokenFiles(tier: "primitive" | "semantic" | "component"): string[] {
+  const tokensDir = path.join(PROJECT_ROOT, "packages/tokens/src");
+  const tierDir = tier === "component" ? path.join(tokensDir, "component") : path.join(tokensDir, tier);
+
+  if (!fs.existsSync(tierDir)) return [];
+
+  return fs
+    .readdirSync(tierDir)
+    .filter((f) => f.endsWith(".tokens.json"))
+    .map((f) => f.replace(".tokens.json", ""));
 }
 
 // ─── Server ──────────────────────────────────────────────────────────────────
@@ -302,6 +386,127 @@ server.tool(
     };
 
     return { content: [{ type: "text", text: JSON.stringify(context, null, 2) }] };
+  }
+);
+
+server.tool(
+  "read_token_file",
+  "Read a token file from the token architecture (primitive, semantic, or component).",
+  {
+    tier: z.enum(["primitive", "semantic", "component"]).describe("Token tier"),
+    name: z.string().describe("Token file name (without .tokens.json extension)"),
+  },
+  async ({ tier, name }) => {
+    const tokens = readTokenFile(tier, name);
+    if (!tokens) {
+      return {
+        content: [{ type: "text", text: `No token file found: ${tier}/${name}.tokens.json` }],
+        isError: true,
+      };
+    }
+    return { content: [{ type: "text", text: JSON.stringify(tokens, null, 2) }] };
+  }
+);
+
+server.tool(
+  "list_token_files",
+  "List all available token files in a tier.",
+  {
+    tier: z.enum(["primitive", "semantic", "component"]).describe("Token tier to list"),
+  },
+  async ({ tier }) => {
+    const files = listTokenFiles(tier);
+    return {
+      content: [{
+        type: "text",
+        text: files.length === 0
+          ? `No token files in ${tier} tier`
+          : `${tier} tier token files:\n${files.map((f) => `  - ${f}`).join("\n")}`,
+      }],
+    };
+  }
+);
+
+server.tool(
+  "validate_contract",
+  "Validate a contract against the JSON schema and token references.",
+  { id: z.string().describe("Component ID") },
+  async ({ id }) => {
+    const { stdout, stderr, code } = await runCommand("pnpm", ["validate"], PROJECT_ROOT);
+
+    // Extract validation result for this specific contract
+    const lines = stdout.split("\n");
+    const contractLine = lines.find((l) => l.includes(`${id}.contract.json`));
+
+    if (!contractLine) {
+      return {
+        content: [{ type: "text", text: `Contract "${id}" not found or validation inconclusive.\n\nFull output:\n${stdout}` }],
+        isError: true,
+      };
+    }
+
+    const passed = contractLine.includes("✓");
+    return {
+      content: [{
+        type: "text",
+        text: passed
+          ? `✓ Contract "${id}" passed validation`
+          : `✗ Contract "${id}" failed validation\n\n${stderr || stdout}`,
+      }],
+      isError: !passed,
+    };
+  }
+);
+
+server.tool(
+  "build_tokens",
+  "Build Figma variable collections (Primitives and Semantic) from token files. Requires .component-contracts with Figma credentials.",
+  {},
+  async () => {
+    const { stdout, stderr, code } = await runCommand(
+      "pnpm",
+      ["run", "build:figma-tokens"],
+      PROJECT_ROOT
+    );
+
+    const success = code === 0;
+    const output = success ? stdout : stderr || stdout;
+
+    return {
+      content: [{
+        type: "text",
+        text: success
+          ? `✓ Token build succeeded\n\n${output}`
+          : `✗ Token build failed\n\n${output}`,
+      }],
+      isError: !success,
+    };
+  }
+);
+
+server.tool(
+  "build_component",
+  "Build a Figma component set from a contract. Requires .component-contracts with Figma credentials.",
+  { id: z.string().describe("Component ID (e.g., 'button', 'accordion')") },
+  async ({ id }) => {
+    const { stdout, stderr, code } = await runCommand(
+      "pnpm",
+      ["run", "build:figma-component", `--component=${id}`],
+      PROJECT_ROOT
+    );
+
+    const success = code === 0;
+    const output = success ? stdout : stderr || stdout;
+
+    return {
+      content: [{
+        type: "text",
+        text: success
+          ? `✓ Component "${id}" build succeeded\n\n${output}`
+          : `✗ Component "${id}" build failed\n\n${output}`,
+      }],
+      isError: !success,
+    };
   }
 );
 
