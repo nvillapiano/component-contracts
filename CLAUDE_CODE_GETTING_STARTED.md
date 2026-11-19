@@ -1,53 +1,68 @@
-# Using Figma Skills in Claude Code
+# Getting started: local Figma builders
 
-Quick start guide for generating Figma components from the component-contracts repository.
+Generate Figma variable collections and component sets from this repo's tokens and contracts, using the local builders.
+
+> **Last verified:** 2026-11-19, from a fresh clone of `main`. The local steps (install, build, config, validation, error paths) were run. The Figma steps were **not** run against a live file, because the verification had no Figma token. See [Known issues](#known-issues).
+
+For the Figma Community skills (which run inside Figma Agent, not from the command line), see [skills/](./skills/).
 
 ## Prerequisites
 
-- Figma access token with file access permissions
-- Figma file key (from your Figma file URL)
-- Node.js 20+ with pnpm installed
+- Node.js 20+ and pnpm 9+
+- A Figma personal access token with edit access to the target file
+- The target file key: the part of the file URL after `/design/`
 
-## Setup (1 minute)
+## Setup
 
-### 1. Configure Access
+### 1. Install and build the Figma packages
 
-Create `.component-contracts` in the project root:
+```bash
+pnpm install
+pnpm --filter "@ds/figma-tokens..." --filter "@ds/figma-component..." build
+```
+
+The `...` suffix builds each package together with its workspace dependencies, which is required from a clean checkout.
+
+> Don't use `pnpm build` at the root yet. It fails in `apps/web-components` (see [Known issues](#known-issues)).
+
+### 2. Configure access
 
 ```bash
 cp .component-contracts.example .component-contracts
 ```
 
-Edit `.component-contracts` and add your values:
+Edit `.component-contracts` with your values:
 
 ```
-FIGMA_ACCESS_TOKEN=figd_xxxxx...
-FIGMA_FILE_KEY=BAmrNaBBA6pqnFKVFOD7Bk
+FIGMA_ACCESS_TOKEN=figd_your_token_here
+FIGMA_FILE_KEY=your_file_key_here
 TOKENS_DIR=packages/tokens/src
 CONTRACTS_DIR=packages/contracts/src
 ```
 
-### 2. Build Dependencies
-
-```bash
-# Install and build all packages
-pnpm install
-pnpm build
-
-# Or just build the Figma packages
-pnpm --filter @ds/figma-tokens build
-pnpm --filter @ds/figma-component build
-```
+`.component-contracts` is gitignored. Never commit it.
 
 ## Usage
 
-### Option A: CLI Runners (Simplest)
+### Validate a contract (no Figma calls)
 
 ```bash
-# Build token collections
-pnpm run build:figma-tokens
+pnpm run build:figma-component --component=button --validate-only
+```
 
-# Build components
+This loads the contract, runs its checks, derives its component tokens, and stops before any Figma call. It currently prints "All components generated successfully!" even though nothing was generated (see [Known issues](#known-issues)).
+
+### Build token collections
+
+```bash
+pnpm run build:figma-tokens
+```
+
+Progress output shows each phase as it runs.
+
+### Build components
+
+```bash
 pnpm run build:figma-component --component=button
 pnpm run build:figma-component --component=accordion
 
@@ -55,165 +70,86 @@ pnpm run build:figma-component --component=accordion
 pnpm run build:figma-component --component=button --component=accordion
 ```
 
-Progress output will show each phase as it runs.
+Build tokens before components. Components bind to the Semantic collection, so it must exist.
 
-### Option B: TypeScript Script
+### Calling the builders from your own script (not yet supported)
 
-Create `scripts/generate-design-system.ts`:
+The packages export `FigmaTokenBuilder` and `FigmaComponentBuilder`, but `@ds/figma-tokens` and `@ds/figma-component` are not declared as root dependencies. A script in `scripts/` that imports them by package name does not resolve. Until that is fixed, import the compiled output by relative path, as the CLI runners do:
 
 ```typescript
-import { FigmaTokenBuilder } from '@ds/figma-tokens';
-import { FigmaComponentBuilder } from '@ds/figma-component';
+import { FigmaTokenBuilder } from '../packages/figma-tokens/dist/index.js';
+import { FigmaComponentBuilder } from '../packages/figma-component/dist/index.js';
 
-async function main() {
-  // Build tokens
-  console.log('Building tokens...');
-  const tokenBuilder = new FigmaTokenBuilder({
-    configPath: '.component-contracts'
-  });
-  const tokenResult = await tokenBuilder.buildTokens();
-  console.log(tokenResult);
+const tokens = await new FigmaTokenBuilder({ configPath: '.component-contracts' }).buildTokens();
+console.log(tokens);
 
-  // Build components
-  console.log('\nBuilding components...');
-  const componentBuilder = new FigmaComponentBuilder({
-    configPath: '.component-contracts'
-  });
-  
-  const components = ['button', 'accordion'];
-  for (const component of components) {
-    const result = await componentBuilder.buildComponent(component);
-    console.log(`${component}: ${result.status}`);
-  }
-}
-
-main().catch(console.error);
+const component = await new FigmaComponentBuilder({ configPath: '.component-contracts' })
+  .buildComponent('button');
+console.log(`button: ${component.status}`);
 ```
 
-Run with:
-```bash
-pnpm exec tsx scripts/generate-design-system.ts
-```
-
-## What Gets Created
-
-### Token Collections
-
-Two Figma variable collections are created:
-
-- **Primitives** - Raw token values (color, space, typography, etc.)
-- **Semantic** - Aliases into Primitives (brand, text, surface, etc.)
-
-All tokens are fully variable-bound and ready for component use.
-
-### Components
-
-For each component contract (button, accordion, etc.):
-
-- **Component Sets** - One per primary variant (Button/Primary, Button/Secondary, etc.)
-- **Variants** - All size × state combinations
-- **Variable Bindings** - All colors, spacing, typography bound to Semantic tokens
-- **Component Properties** - Proper prop definitions (label, iconStart, etc.)
-- **Generation Notes** - Documentation of assumptions and limitations
+Run it with `pnpm exec tsx scripts/<your-file>.ts`.
 
 ## Debugging
 
-### Check Configuration
-
 ```bash
-# Verify your token counts
-cat .component-contracts | grep TOKENS_DIR
-ls $(cat .component-contracts | grep TOKENS_DIR | cut -d= -f2)
-```
+# Confirm the token directory exists and has files
+ls "$(grep TOKENS_DIR .component-contracts | cut -d= -f2)"
 
-### Validate Before Building
-
-```bash
-# Validate component without creating
-pnpm run build:figma-component --component=button --validate-only
-```
-
-### Enable Debug Mode
-
-```bash
-# Stop between phases for approval
+# Pause between phases for approval
 pnpm run build:figma-tokens --debug
 pnpm run build:figma-component --component=button --debug
-```
 
-### View Detailed Errors
-
-```bash
-# Show stack traces on errors
+# Print stack traces on errors
 pnpm run build:figma-tokens --dev
 ```
 
 ## Troubleshooting
 
-### "Configuration file not found"
+**"Configuration file not found"**
+Create it: `cp .component-contracts.example .component-contracts`
 
-Create `.component-contracts`:
-```bash
-cp .component-contracts.example .component-contracts
-```
+**"FIGMA_ACCESS_TOKEN not found"**
+Check that the line exists and is filled in: `grep FIGMA_ACCESS_TOKEN .component-contracts`
 
-### "FIGMA_ACCESS_TOKEN not found"
+**"Module not found: @ds/figma-tokens" (or "Cannot find module '@ds/schema'")**
+Build the packages with their dependencies, as in [Setup step 1](#1-install-and-build-the-figma-packages).
 
-Verify your `.component-contracts` file:
-```bash
-cat .component-contracts | grep FIGMA_ACCESS_TOKEN
-```
+**"Phase 1 failed: Figma API error 404: Not Found"**
+Usually the file key is wrong, or the token has no access to that file. Check `FIGMA_FILE_KEY` first. The error does not say this yet (see [Known issues](#known-issues)).
 
-### "Module not found: @ds/figma-tokens"
+**"Failed to parse contract"**
+Check the contract is valid JSON: `head -20 packages/contracts/src/button.contract.json`
 
-Ensure packages are built:
-```bash
-pnpm build
-```
+## What gets created
 
-### "Failed to parse contract"
+These are the intended results. They were **not** checked against a live Figma file in this verification.
 
-Check contract file format:
-```bash
-cat packages/contracts/src/button.contract.json | head -20
-```
+- **Primitives** and **Semantic** variable collections, bound to the token files.
+- For each contract: component sets with variants for each size and state combination, variable bindings to Semantic tokens, component properties from the contract, and a "Generation Notes" frame.
 
-## Next Steps
+## Next steps
 
-After generating components:
-
-1. **Review in Figma** - Open your Figma file to see the generated components
-2. **Export references** - Compare against Storybook:
-   ```bash
-   pnpm run export-figma-references
-   ```
-3. **Validate fidelity** - Check colors, spacing, typography match
-4. **Generate more components** - Repeat for accordion, dialog, etc.
+1. Open the Figma file and review the generated components.
+2. Compare against Storybook, if you use it: `pnpm run export-figma-references` (not yet verified).
 
 ## Architecture
 
-The implementation uses three layers:
+1. **Libraries** (`packages/figma-tokens/`, `packages/figma-component/`): builder logic. They call the Figma REST API directly through `FigmaClient` (`figma-api.ts`).
+2. **CLI runners** (`scripts/build-figma-*.ts`): command-line entry points that read `.component-contracts`, run the libraries, and report progress.
+3. **Token and contract inputs**: `packages/tokens/src` and `packages/contracts/src`.
 
-1. **TypeScript Libraries** (`packages/figma-tokens/`, `packages/figma-component/`)
-   - Core logic extracted into reusable, testable modules
-   - No client-specific dependencies
-   - Full type safety with IDE support
+## Known issues
 
-2. **CLI Runners** (`scripts/build-figma-*.ts`)
-   - Command-line entry points
-   - Progress reporting and error handling
-   - Works in any Node.js environment
+Found while verifying this guide on 2026-11-19. Each one is a bug in the code or the tooling, not a step you should work around.
 
-3. **Figma Plugin API**
-   - Executed via `use_figma` MCP in Claude Code
-   - Handles all Figma operations (create collections, bind variables, etc.)
+1. **Root `pnpm build` fails** in `apps/web-components` with 26 TypeScript errors in the story files. CI does not run this command, so it has not been caught.
+2. **The `@ds/figma-*` packages are not root dependencies**, so scripts outside the packages can't import them by name.
+3. **`--validate-only` prints "All components generated successfully!"** even though nothing was generated.
+4. **A bad file key produces a bare 404** from Phase 1. The message doesn't name the setting to check.
+5. **Token coverage output contradicts itself.** It reports "68%" next to "(all tokens defined)".
+6. **Phase 0 prints the placeholder file key** as if it had been checked.
 
-## See Also
+## Questions
 
-- [REFACTORING.md](../tmp/component-contracts-figma/REFACTORING.md) - Architecture overview
-- [CLAUDE_CODE_USAGE.md](../tmp/component-contracts-figma/CLAUDE_CODE_USAGE.md) - Detailed API reference
-- [Figma Skills Repository](https://github.com/nvillapiano/component-contracts-figma) - Original markdown skills
-
-## Questions?
-
-Check the main [README.md](README.md) or the skills documentation for workflow details.
+See the [README](./README.md). The design rationale is in [docs/architecture.md](./docs/architecture.md) and [docs/decisions.md](./docs/decisions.md).

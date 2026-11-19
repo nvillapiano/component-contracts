@@ -84,7 +84,7 @@ Configure MCP with the repo's `.cursor/mcp.json`. In Cursor: Settings → Featur
 
 **To use:** Install skills from [Figma Community](https://www.figma.com/community) (published as `onenorth-cc-figma-tokens` and `onenorth-cc-figma-components`), then upload token or contract JSON files to Figma Agent.
 
-See [skills/](./skills/) for documentation and implementation.
+See [skills/](./skills/) for documentation and implementation. To run the local builders from the command line, see [CLAUDE_CODE_GETTING_STARTED.md](./CLAUDE_CODE_GETTING_STARTED.md).
 
 ---
 
