@@ -55,7 +55,7 @@ Repo currently has button v2.0.0 and accordion v0.1.0 — the updated versions n
 
 3. **Commit updated contracts** — button v2.2.0 and accordion v0.2.2 from Cursor outputs into `packages/contracts/src/`.
 
-4. **Clean scripts folder** — `rimraf scripts/` before publishing.
+4. **Remove one-off generated scripts** — delete any throwaway scripts an agent created during a run. Do **not** delete `scripts/` itself: it holds the tracked Figma builders.
 
 5. **Create public repo** — Structure:
    ```
@@ -117,7 +117,7 @@ Verify your Phase 0 plan to yourself, then run straight through to completion.
 - Child order: always read from `composition.slots[slot].figma.childOrder`
 
 ### Scripts
-- All generated scripts are disposable — `rimraf scripts/` after every run, never reuse
+- One-off generated scripts are disposable — delete them after the run, never reuse. Write them outside `scripts/`. Never delete `scripts/` itself, which holds the tracked Figma builders
 
 ---
 
