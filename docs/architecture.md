@@ -49,6 +49,9 @@ Token paths referenced in contracts (e.g. `brand.500`, `space.md`) must exist in
 ### `@ds/mcp-server`
 An MCP (Model Context Protocol) server that exposes the contract registry to AI agents. Provides tools for querying contracts, finding token usage, diffing versions, and writing patches back to disk. Runs as a local stdio process in Cursor or Claude Desktop.
 
+### `@ds/figma-tokens` and `@ds/figma-component`
+Builders that create Figma variable collections (Primitives, Semantic) and component sets from contracts through the Figma REST API. Driven by `scripts/build-figma-tokens.ts` and `scripts/build-figma-component.ts`. Both import compiled output from `dist/`, so they must be built before the scripts run.
+
 ### `apps/validator`
 A CI script that validates every `.contract.json` against the JSON Schema using AJV. Exits non-zero on failure. Runs in CI on every PR that touches `packages/contracts/`.
 
@@ -81,7 +84,7 @@ The React component library. Each component:
 
 ## Token Architecture
 
-Tokens follow the W3C Design Token Community Group (DTCG) format. They are organized into two tiers:
+Tokens follow the W3C Design Token Community Group (DTCG) format. They are organized into three tiers (ADR-018 covers the component tier):
 
 - **Primitive tokens** — raw values (`color.blue.500: #3B82F6`, `space.4: 16px`)
 - **Semantic tokens** — role-based aliases that reference primitives (`brand.500: {color.blue.500}`, `space.md: {space.4}`)
@@ -92,7 +95,7 @@ Contracts reference semantic tokens only. This means a brand color change touche
 
 ## AI Agent Integration
 
-The MCP server exposes six tools:
+The MCP server exposes eleven tools:
 
 | Tool | Purpose |
 |------|---------|
@@ -102,6 +105,11 @@ The MCP server exposes six tools:
 | `diff_contract` | Show what changed between versions |
 | `find_by_token` | Blast-radius analysis — which components use a token |
 | `get_platform_context` | Contract filtered for a specific platform |
+| `read_token_file` | Read a token file from a tier |
+| `list_token_files` | List token files per tier |
+| `validate_contract` | Validate one contract against the schema |
+| `build_tokens` | Run the Figma token builder locally (`pnpm run build:figma-tokens`) |
+| `build_component` | Run the Figma component builder locally for one contract |
 
 The intended agentic workflow: when a contract changes, an agent calls `get_platform_context` for each target platform, reads the current implementation, diffs them, and either proposes or applies updates to bring them into parity.
 

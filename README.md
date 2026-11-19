@@ -25,6 +25,8 @@ Use `pnpm kill:web` to stop stale Storybook instances on port 6006.
 | `packages/contracts` | Contract files (`.contract.json`) — source of truth |
 | `packages/tokens` | Design tokens (W3C DTCG), built by Style Dictionary |
 | `packages/mcp-server` | MCP server for Cursor / Claude Desktop |
+| `packages/figma-tokens` | Figma REST builder for token variable collections |
+| `packages/figma-component` | Figma REST builder for component sets from contracts |
 | `apps/validator` | CI: validates contracts against schema |
 | `apps/web` | React component library (Vite + Storybook) |
 | `skills/` | [Figma Agent](./skills/) skills for Figma Community — `cc-figma-tokens`, `cc-figma-components` |
