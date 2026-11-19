@@ -2,7 +2,7 @@
 
 Where the project stands, what's open, and the order I'd work in. The goals behind it are in [GOALS.md](./GOALS.md). Live status lives on the [Component Contracts project board](https://github.com/users/nvillapiano/projects/1). This file is the narrative: what exists, what's open in each milestone, and the order to work in. Update it when a milestone changes state, not when an issue moves.
 
-Status as of 2026-11-19.
+Status as of 2026-11-19. This date is when the narrative was last checked against the repo and the board, in `YYYY-MM-DD` format. Update it whenever this file changes, even if only one section does.
 
 ---
 
