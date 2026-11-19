@@ -1,4 +1,4 @@
-# ADR-015: Making Component Contracts Portable & Productizable
+# ADR-020: Making Component Contracts Portable & Productizable
 
 **Date:** 2026-08-10  
 **Status:** Proposed  
