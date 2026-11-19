@@ -1,5 +1,6 @@
 {
   "name": "@ds/figma-component",
+  "private": true,
   "version": "0.1.0",
   "description": "Generate Figma components from component contracts",
   "type": "module",

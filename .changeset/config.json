@@ -2,10 +2,19 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [],
-  "linked": [["@ds/schema", "@ds/contracts", "@ds/tokens"]],
+  "fixed": [
+    [
+      "@ds/schema",
+      "@ds/contracts",
+      "@ds/tokens",
+      "@ds/figma-tokens",
+      "@ds/figma-component",
+      "@ds/mcp-server"
+    ]
+  ],
+  "linked": [],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@ds/mcp-server", "@ds/validator"]
+  "ignore": ["@ds/validator", "@ds/web", "@ds/web-components"]
 }
