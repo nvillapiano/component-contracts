@@ -7,7 +7,6 @@ storybook-static
 .env
 .component-contracts
 .cursor/mcp.json
-scripts/
 *.zip
 
 # Local git worktrees (accidentally committed as a gitlink in 5cecd54)
