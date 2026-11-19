@@ -62,6 +62,8 @@ The React component library. Each component:
 - Has Storybook stories that mirror contract variants 1:1
 - Is tested via `@storybook/test` (interactions) and `@storybook/addon-a11y` (accessibility)
 
+**Current layout.** Components live under `apps/web/src/`, in `components/<name>/` (Button) and `molecules/<name>/` (Accordion). Principle 2's atoms, molecules, and organisms are a dependency rule, and the folder names are not yet enforced. Button is an atom but sits in `components/`, and there is no `atoms/` folder yet. Reorganizing the folders to match principle 2 is tracked separately and is not part of the current layout.
+
 ---
 
 ## The Contract Loop
