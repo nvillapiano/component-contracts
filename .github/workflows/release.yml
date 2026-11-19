@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  version:
+    name: Open or update release PR
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Release PRs opened with GITHUB_TOKEN do not trigger CI, so they cannot
+      # pass required checks. Set a RELEASE_TOKEN secret (a fine-grained PAT or
+      # GitHub App token with contents and pull-requests write) to fix this.
+      # Until then the fallback is GITHUB_TOKEN, and the release PR needs to be
+      # closed and reopened before it can be merged.
+      - name: Create release PR or no-op
+        uses: changesets/action@v1
+        with:
+          githubToken: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          version: pnpm changeset version
+          title: "chore(release): version packages"
+          commit: "chore(release): version packages"
+          createGithubReleases: false
+          publish: ""

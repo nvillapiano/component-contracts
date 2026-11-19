@@ -88,6 +88,15 @@ See [skills/](./skills/) for documentation and implementation.
 
 ---
 
+## Versioning and releases
+
+Product packages (`@ds/schema`, `@ds/contracts`, `@ds/tokens`, `@ds/figma-tokens`, `@ds/figma-component`, `@ds/mcp-server`) share one version number. Apps are private and not versioned.
+
+- **Every PR that changes product behavior adds a changeset.** Run `pnpm changeset`, pick the bump, and describe the change in one sentence. Use `pnpm changeset add --empty` for changes that don't affect a release, such as docs or CI.
+- **Before 1.0**, the version is `0.x.y`. Breaking changes bump the minor version (`0.2.0` → `0.3.0`). Features and non-breaking fixes bump the patch version. No pre-release tags until packages are published to a registry.
+- **Merging to `main`** updates or opens a "chore(release): version packages" PR. It bumps versions and writes `CHANGELOG.md`. Merging that PR is the release. Nothing is published to npm yet.
+- **The release PR needs CI.** A PR opened with the default `GITHUB_TOKEN` does not trigger workflows, so it cannot pass required checks. Add a `RELEASE_TOKEN` repository secret (a fine-grained PAT or GitHub App token with contents and pull-requests write access) to fix this. Without it, close and reopen the release PR before merging so CI runs on it.
+
 ## Adding a component
 
 1. Add `packages/contracts/src/{id}.contract.json`

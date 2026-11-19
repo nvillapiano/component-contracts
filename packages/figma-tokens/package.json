@@ -1,5 +1,6 @@
 {
   "name": "@ds/figma-tokens",
+  "private": true,
   "version": "0.1.0",
   "description": "Build Figma variable collections from W3C DTCG token files",
   "type": "module",
