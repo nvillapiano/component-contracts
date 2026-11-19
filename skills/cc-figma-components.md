@@ -126,6 +126,36 @@ Common token categories and what they map to in Figma:
 | `typography.size` | Font size | `setBoundVariable` on fontSize |
 | `motion.transition` | Duration | Metadata (not bound, informational) |
 
+## Component-scoped (Tier 3) tokens
+
+Tier 3 tokens are derived from the contract's `tokens` section when the component is built. They are not stored as files. Only Primitive (Tier 1) and Semantic (Tier 2) variables are persisted.
+
+Example binding:
+```
+Contract:          "background.primary": "brand.600"
+Tier 3 (derived):  --ds-button-fill-brand
+Tier 2 (Semantic): brand/600
+Tier 1 (Primitive): color/blue/600
+```
+
+Role translation used when deriving Tier 3 names:
+- `color.background.*` → `fill`
+- `color.text.*` → `text`
+- `spacing.*` → `spacing`
+- `typography.*` → `typography`
+- `border.radius`, `border.width` → `border`
+- `motion.*` → `transition`
+
+Bindings always target Semantic variables, never Primitives directly.
+
+## Generation Notes
+
+After the component is created, it includes a "Generation Notes" frame that records:
+- Manual steps needed because of Figma API limitations
+- A token resolution summary
+- The variant count
+- Known constraints
+
 ## Important notes
 
 - **Auto-layout**: Components are created with auto-layout (HORIZONTAL) by default. Adjust in Figma if needed

@@ -19,7 +19,7 @@
 ### Skills — written, tested, validated
 Both live at `~/.cursor/plugins/local/figma-use/skills/`:
 - `cc-figma-tokens/SKILL.md` — reads W3C DTCG token files, creates Primitive + Semantic variable collections in Figma
-- `cc-figma-component/SKILL.md` — reads a contract, generates fully variable-bound component sets
+- `cc-figma-components/SKILL.md` — reads a contract, generates fully variable-bound component sets
 
 ### Figma file state
 | Layer | Count | Notes |
@@ -63,7 +63,7 @@ Repo currently has button v2.0.0 and accordion v0.1.0 — the updated versions n
    .component-contracts.example
    skills/
      cc-figma-tokens/SKILL.md
-     cc-figma-component/SKILL.md
+     cc-figma-components/SKILL.md
    examples/
      contracts/button.contract.json
      contracts/accordion.contract.json
@@ -80,7 +80,7 @@ Repo currently has button v2.0.0 and accordion v0.1.0 — the updated versions n
 ## Run command for any component
 
 ```
-Read .component-contracts. Load cc-figma-component, cc-figma-tokens,
+Read .component-contracts. Load cc-figma-components, cc-figma-tokens,
 figma-use, and figma-generate-library skills.
 
 The Primitives and Semantic variable collections already exist in
@@ -189,7 +189,7 @@ Sections in order:
 1. Badge ("Figma MCP Beta — March 2026") + eyebrow ("One North — Open Source")
 2. Hero: "Component / Contracts" (two-line, blue accent on "Contracts")
 3. The idea — spec-driven vs prompt-driven, contract = source code, Figma = build target
-4. Pipeline — 4-step numbered list: contract.json → Primitives + Semantic → cc-figma-component → This file
+4. Pipeline — 4-step numbered list: contract.json → Primitives + Semantic → cc-figma-components → This file
 5. What's in this file — Button card (v2.2.0 stable) + Accordion card (v0.2.2 draft)
 6. Generation Notes callout — explains yellow ⚠️ frames, not bugs, transparency layer
 7. How to use — contracts/tokens can live anywhere (CMS, DB, Figma vars), file structure is reference impl
