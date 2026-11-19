@@ -9,7 +9,7 @@ on:
 jobs:
   lint-commits:
     name: Lint commits
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
 
   validate-contracts:
     name: Validate contracts
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -42,7 +42,7 @@ jobs:
 
   build-tokens:
     name: Build tokens
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -57,7 +57,7 @@ jobs:
 
   test-web:
     name: Test web (React)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [validate-contracts, build-tokens]
     steps:
       - uses: actions/checkout@v4
