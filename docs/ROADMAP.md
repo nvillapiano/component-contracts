@@ -1,6 +1,6 @@
 # Roadmap
 
-Where the project stands, what's open, and the order I'd work in. The goals behind it are in [GOALS.md](./GOALS.md). Open work is tracked as GitHub issues grouped into milestones. This file is the narrative. Update it when a milestone changes state.
+Where the project stands, what's open, and the order I'd work in. The goals behind it are in [GOALS.md](./GOALS.md). Live status lives on the [Component Contracts project board](https://github.com/users/nvillapiano/projects/1). This file is the narrative: what exists, what's open in each milestone, and the order to work in. Update it when a milestone changes state, not when an issue moves.
 
 Status as of 2026-11-19.
 
@@ -52,29 +52,11 @@ Status as of 2026-11-19.
 
 ## 2. What's open, by milestone
 
-Milestones are defined in [GOALS.md](./GOALS.md). Issue numbers below are the source of truth. This list is a snapshot.
+Issues, status, and areas live on the project board. Milestones are M1 (PoC), M2 (portable core), and M3 (later). Definitions are in [GOALS.md](./GOALS.md).
 
-### M1: Realized PoC (5 open)
-- #22 Fix visual drift between React and Web Components (Button and Accordion)
-- #17 Text Input, React
-- #18 Text Input, Web Components
-- #39 Bootstrapper example. Test data is tracked (#41). The guide itself is not written.
-- #40 Decide the ADR-014 font-loading question for Storybook's `preview.ts`
-
-### M2: Portable core (5 open)
-- #30 Portable and productizable: CLI, config, templates. Proposal in `docs/ADR-015-PORTABILITY.md` on branch `docs/adr-015-portability`. No PR yet, and it still uses the number ADR-015, which is already taken.
-- #29 Reverse-engineer contracts from existing designs
-- #16 `get_agent_context` MCP tool
-- #36 Consolidate Tier 1 and Tier 2 into one tokens file. Proposed as v2 refactoring.
-- #37 Platform-aware generation: shadows as Figma effects, state variants for Figma
-
-### M3: Later (10 open)
-- Native: #28 (codegen), #14 (iOS), #15 (Android)
-- Visual regression: #27 (epic), #11 and #12 (Chromatic per app)
-- Figma sync: #10 (variables), #4 (MCP `sync-to-figma`)
-- Icons and docs: #23 (`@ds/icons`), #19 (doc site)
-
----
+- **M1: Realized PoC (5 open).** Text Input in both targets or back to draft; visual parity for Button and Accordion (#22); bootstrapper guide (#39); font-loading decision (#40).
+- **M2: Portable core (5 open).** Portability and product boundary (#30, ADR-020 pending); reverse-engineering contracts (#29); `get_agent_context` (#16); token consolidation (#36, proposed to defer); platform-aware generation (#37).
+- **M3: Later (10 open).** Native (#28, #14, #15); Chromatic (#27, #11, #12); Figma sync (#10, #4); icons and doc site (#23, #19).
 
 ## 3. Open problems I found, not yet tracked as issues
 
