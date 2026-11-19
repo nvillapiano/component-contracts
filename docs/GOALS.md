@@ -50,6 +50,16 @@ Platforms and tooling, pursued only after M1 and M2:
 
 ---
 
+## Sequencing
+
+The order of work, and why. Live status is on the [project board](https://github.com/users/nvillapiano/projects/1).
+
+1. **Finish M1 first.** It is the smallest step that makes the PoC true. Demote Text Input to `draft` so the repo matches principle 8. Decide #40. Write the bootstrapper guide (#39). Fix the Button and Accordion drift (#22) by comparing the two implementations by hand. Visual regression can wait for Chromatic.
+2. **Then M2, starting with the clean-clone fix.** Everything else in M2 assumes a fresh clone builds. Decide the product boundary before writing any portability code. #16 is small and useful for agents, so it is a good early M2 task. Consider deferring #36.
+3. **M3 only after M1 and M2.** Chromatic and native work depend on the parity and product-boundary decisions.
+
+---
+
 ## Non-goals (for now)
 
 - No SaaS dashboard or hosted service.
@@ -58,6 +68,16 @@ Platforms and tooling, pursued only after M1 and M2:
 - No Chromatic until there is parity to protect (ADR-008).
 - No new components beyond Button, Accordion, and Text Input until M1 is done.
 - No publishing to npm or a public repo until M2 is done.
+
+---
+
+## Deferred decisions
+
+Decided to wait, with the reason. Revisit when the stated condition holds.
+
+- **One config file** (merge `.component-contracts` and `.env.example`). Agreed in principle. Deferred because there are not yet enough adopting users for it to matter, and the project is pre-1.0. Revisit at 1.0, or when ADR-020 is accepted.
+- **Release tooling** (changesets). Open. Installed but unused. Decide before the first publish.
+- **Text Input.** Demote to `draft` now (see Sequencing), and implement in M1 when parity work is done.
 
 ---
 

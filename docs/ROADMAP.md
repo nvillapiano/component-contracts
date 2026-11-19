@@ -60,36 +60,14 @@ Issues, status, and areas live on the project board. Milestones are M1 (PoC), M2
 
 ## 3. Open problems I found, not yet tracked as issues
 
+These become issues on the board once approved. Sequencing and open decisions live in [GOALS.md](./GOALS.md).
+
 These were found by reading the repo, not by running it. Each one needs confirming before it becomes an issue. You asked me to flag before creating issues.
 
 1. **A fresh clone can't run the Figma builders.** `scripts/build-figma-*.ts` import `packages/*/dist/index.js`. `dist/` is gitignored, and the root scripts don't build packages first. Likely fix: a `prebuild` step, or a `build:figma` script that builds the two packages first. Blocks the M2 "clean clone" criterion. I haven't confirmed this in a clean clone.
 2. **Text Input is `stable` with no implementation.** Principle 8 says draft contracts aren't promoted until they're implemented. Demoting it to `draft` is a one-line change that makes the repo accurate. Implementing it can wait for M1.
-3. **Stale remote branches.** Several merged branches are still on origin, and `docs/adr-015-portability` is unmerged with no PR. Deleting merged branches needs your OK.
+3. **Stale remote branches.** Several merged branches are still on origin. The old ADR branch `docs/adr-015-portability` is superseded by PR #48. Deleting them needs your OK.
 4. **Pre-existing type error** in `scripts/generate-figma-components.ts`. The file is superseded (#45), so this is low priority.
 5. **Dependency currency is unverified.** Storybook is pinned at 8.6.18 and Playwright resolves to 1.60. I haven't run `pnpm outdated`.
 
 ---
-
-## 4. Recommended order
-
-1. **Finish M1 first.** It's the smallest step that makes the PoC true.
-   - Demote Text Input to `draft` (problem 2). Quick, and it makes the repo honest.
-   - Decide #40 and close it, with the decision recorded in the issue.
-   - Write `docs/BOOTSTRAPPER.md` for #39 using the tracked test data.
-   - Fix the Button and Accordion drift in #22 by comparing the two implementations by hand. Chromatic (#27) comes later, so visual parity doesn't wait on it.
-2. **Then M2, starting with the clean-clone fix** (problem 1). Everything else in M2 assumes a fresh clone works.
-   - Renumber the portability ADR to ADR-020 and open its PR.
-   - Decide the product boundary (see GOALS.md) before writing any portability code.
-   - #16 is small and useful for agents, so it's a good early M2 task.
-   - Consider deferring #36. It's a refactor with little current payoff.
-3. **M3 only after M1 and M2.** Chromatic and native work depend on the parity and product-boundary decisions.
-
----
-
-## 5. Decisions only you can make
-
-- **Which skill name to publish.** PR #46 kept `cc-figma-components` to match the Community listing. Confirm, or reverse it.
-- **Whether Text Input should be demoted now or implemented in M1.** My recommendation is to demote it.
-- **Whether to publish the Figma skills.** I don't know whether the Community submission happened. Nothing in the repo records it.
-- **Whether to close #36** rather than carry it as M2 work.
-- **Whether the product is publicly available eventually**, and when that becomes a goal. Currently it's an M2 criterion but not a commitment.
